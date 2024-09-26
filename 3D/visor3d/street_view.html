@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Street View side-by-side</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #pano {
+            float: left;
+            height: 100%;
+            width: 100%;
+        }
+        #cerrar {
+            position: absolute;
+            top: 10px;
+            right: 30px;
+            height: 57%;
+            width: 50%;
+            z-index: 10;
+        }
+        img {
+            height: 970px;
+            width: 572px;
+        }
+    </style>
+    <script src="src/app/index_evt/index_evt.js"></script>
+    <!--<script src="./../Source/Scene/ImageryLayerCollection.js"></script>-->
+    <script src="CesiumViewer.js"></script>
+</head>
+<body>
+    <div id="pano"></div>
+    <div id="map"></div>
+    <script>
+        // Función para capturar parámetros de la URL
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        var coordenadas = getParameterByName('coordenadas');
+        var ccc = coordenadas.split(",", 2);
+
+        function initialize() {
+            var fenway = { lat: parseFloat(ccc[0]), lng: parseFloat(ccc[1]) };
+            var panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('pano'),
+                {
+                    position: fenway,
+                    pov: { heading: 34, pitch: 10 },
+                    linksControl: false
+                }
+            );
+
+            // Llama a la función mapposi en el padre (donde está el mapa de CesiumJS)
+            panorama.addListener('position_changed', function () {
+                window.parent.mapposi(panorama.getPosition(), panorama.getPov().heading);
+            });
+
+            panorama.addListener('pov_changed', function () {
+                window.parent.mapposi(panorama.getPosition(), panorama.getPov().heading);
+            });
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQb7uqeH9Diof2c7zDfMj-lFIeVajnLUw&signed_in=true&callback=initialize">
+    </script>
+</body>
+</html>
+

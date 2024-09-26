@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Administrador</title>
+	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<link rel="icon" href="./template_admin/assets/img/kaiadmin/escudo.ico" type="image/x-icon"/>
+	<script src="admin/vuacc.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function () {verificarAcceso();});</script>
+
+	<!-- Fonts and icons --> 
+	<script src="./template_admin/assets/js/plugin/webfont/webfont.min.js"></script>
+	<script>
+		WebFont.load({
+			google: {"families":["Public Sans:300,400,500,600,700"]},
+			custom: {"families":["Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['./template_admin/assets/css/fonts.min.css']},
+			active: function() {
+				sessionStorage.fonts = true;
+			}
+		});
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- Incluir Highcharts -->
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<!--<script src="src/highcharts/js/highcharts.js"></script>
+    <script src="src/highcharts/js/exporting.js"></script>-->
+	<script src="visor/sql/js_sql.js"></script>
+	
+	
+	<!-- CSS Files -->
+	<link rel="stylesheet" href="./template_admin/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="./template_admin/assets/css/plugins.min.css">
+	<link rel="stylesheet" href="./template_admin/assets/css/kaiadmin.min.css">
+
+	<!-- CSS Just for demo purpose, don't include it in your project -->
+	<link rel="stylesheet" href="./template_admin/assets/css/demo.css">
+</head>
+<body onload="dataEst()">
+	<div class="wrapper">
+		<!-- Sidebar -->
+		<div class="sidebar" data-background-color="dark">
+			<div class="sidebar-logo">
+				<!-- Logo Header -->
+				<div class="logo-header" data-background-color="dark">
+					<a href="admin.html" class="logo">
+						<img src="./template_admin/assets/img/kaiadmin/logo.png" alt="navbar brand" class="navbar-brand" height="20">
+					</a>
+					<div class="nav-toggle">
+						<button class="btn btn-toggle toggle-sidebar">
+							<i class="gg-menu-right"></i>
+						</button>
+						<button class="btn btn-toggle sidenav-toggler">
+							<i class="gg-menu-left"></i>
+						</button>
+					</div>
+					<button class="topbar-toggler more">
+						<i class="gg-more-vertical-alt"></i>
+					</button>
+				</div>
+				<!-- End Logo Header -->	
+			</div>	
+			<div class="sidebar-wrapper scrollbar scrollbar-inner">
+				<div class="sidebar-content">
+					<ul class="nav nav-secondary">			
+						<li class="nav-item active">
+							<a href="#dashboard">
+								<i class="fas fa-chart-pie"></i>
+								<!--<i class="fas fa-bars"></i>-->
+								<p>Estadísticas</p>
+							</a>						
+						</li>
+						<li class="nav-item">
+							<a href="./template_admin/tables/datatables.html">
+								<i class="fas fa-users"></i>
+								<p>Administrar Usuarios</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="./template_admin/tables/tables.html">
+								<i class="fas fa-database"></i>
+								<p>Administrar SIG</p>
+							</a>
+						</li>						
+						<li class="nav-item">
+							<a href="./template_admin/manual/manual_administrador.pdf" target="_blank">
+							  <i class="fas fa-file"></i>
+							  <p>Manual de usuario</p>
+							  <!--<span class="badge badge-secondary">1</span>-->
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- End Sidebar -->
+
+		<div class="main-panel">
+			<div class="main-header">
+				<div class="main-header-logo">
+					<!-- Logo Header -->
+					<div class="logo-header" data-background-color="dark">
+
+						<a href="index.html" class="logo">
+							<img src="./template_admin/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20">
+						</a>
+						<div class="nav-toggle">
+							<button class="btn btn-toggle toggle-sidebar">
+								<i class="gg-menu-right"></i>
+							</button>
+							<button class="btn btn-toggle sidenav-toggler">
+								<i class="gg-menu-left"></i>
+							</button>
+						</div>
+						<button class="topbar-toggler more">
+							<i class="gg-more-vertical-alt"></i>
+						</button>
+					</div>
+					<!-- End Logo Header -->
+				</div>
+				<!-- Navbar Header -->
+				<nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+					<div class="container-fluid">
+						<h3 class="fw-bold mb-3">Estadísticas</h3>
+					</div>
+					<ul class="navbar-nav topbar-nav ms-md-auto align-items-center" id="vsalir" style="cursor: pointer;">
+						<li class="nav-item topbar-icon dropdown hidden-caret">
+							<div class="info-user ms-3">
+								<div class="username">Salir</div>
+							</div>
+						</li>
+						<li class="nav-item topbar-icon dropdown hidden-caret">
+							<a class="nav-link">
+								<!--<i class="fas fa-layer-group"></i>-->	
+								<i class="fas fa-sign-out-alt"></i>		
+							</a>	
+						</li>	
+					</ul>
+				</nav>
+				<!-- End Navbar -->
+			</div>
+			
+			<div class="container">
+				<div class="page-inner">
+					<!--<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+						
+					</div>-->
+					<div class="row">
+						<div class="col-sm-6 col-md-4">
+							<div class="card card-stats card-round">
+								<div class="card-body">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center icon-primary bubble-shadow-small">
+												<i class="fas fa-users"></i>
+											</div>
+										</div>
+										<div class="col col-stats ms-3 ms-sm-0">
+											<div class="numbers">
+												<p class="card-category">Ingresos</p>
+												<h4 class="card-title" id="numIng"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="card card-stats card-round">
+								<div class="card-body">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center icon-info bubble-shadow-small">
+												<i class="fas fa-user-check"></i>
+											</div>
+										</div>
+										<div class="col col-stats ms-3 ms-sm-0">
+											<div class="numbers">
+												<p class="card-category">Usuarios</p>
+												<h4 class="card-title" id="numUsers"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-4">
+							<div class="card card-stats card-round">
+								<div class="card-body">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center icon-success bubble-shadow-small">
+												<i class="fas fa-layer-group"></i>
+											</div>
+										</div>
+										<div class="col col-stats ms-3 ms-sm-0">
+											<div class="numbers">
+												<p class="card-category">Capas</p>
+												<h4 class="card-title" id="numCaps"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Ingresos por usuario (barras)</div>
+								</div>
+								<div class="card-body">
+									<div class="chart-container" id="ipuchart">										
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Ingresos por usuario (porcentaje)</div>
+								</div>
+								<div class="card-body">
+									<div class="chart-container" id="ipupie">										
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Capas por temática (barras)</div>
+								</div>
+								<div class="card-body">
+									<div class="chart-container" id="cctchart">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Capas por temática (porcentaje)</div>
+								</div>
+								<div class="card-body">
+									<div class="chart-container" id="cctpie">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Clics por actividad (barras)</div>
+								</div>
+								<div class="card-body">
+									<div class="chart-container" id="clicschart">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Actividades (porcentaje)</div>
+								</div>
+								<div class="card-body">
+									<div class="chart-container" id="clicspie">										
+									</div>
+								</div>
+							</div>
+						</div>
+										
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Ingresos y actividades</div>
+								</div>
+								<div class="card-body">
+								<div class="table-responsive">								
+								</div>
+								<table id="table" class="display table table-striped table-hover"></table>
+								</div>								
+								</div>
+							</div>
+						</div>
+					</div>				
+		        </div>
+	        </div>
+		</div>
+		<section class="dots-container" id="loading">
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+			<div class="dot"></div>
+		</section>
+		  
+	</div>
+	<!--   Core JS Files   -->
+	<script src="./template_admin/assets/js/core/jquery-3.7.1.min.js"></script>
+	<script src="./template_admin/assets/js/core/popper.min.js"></script>
+	<script src="./template_admin/assets/js/core/bootstrap.min.js"></script>
+
+	<!-- jQuery Scrollbar -->
+	<script src="./template_admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+	<!-- Chart JS -->
+	<!--<script src="./template_admin/assets/js/plugin/chart.js/chart.min.js"></script>-->
+
+	<!-- jQuery Sparkline -->
+	<script src="./template_admin/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+	<!-- Chart Circle -->
+	<!--<script src="./template_admin/assets/js/plugin/chart-circle/circles.min.js"></script>-->
+
+	<!-- Datatables -->
+	<!--<script src="./template_admin/assets/js/plugin/datatables/datatables.min.js"></script>-->
+
+	<!-- Bootstrap Notify -->
+	<!--<script src="./template_admin/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>-->
+
+	<!-- jQuery Vector Maps -->
+	<!--<script src="./template_admin/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+	<script src="./template_admin/assets/js/plugin/jsvectormap/world.js"></script>-->
+
+	<!-- Sweet Alert -->
+	<script src="./template_admin/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+	<!-- Kaiadmin JS -->
+	<script src="./template_admin/assets/js/kaiadmin.min.js"></script>
+
+
+	<script src="./template_admin/assets/js/setting-demo.js"></script>
+	<!--<script src="./template_admin/assets/js/demo.js"></script>-->
+	<script src="admin/data.js"></script>
+	<link rel="stylesheet" href="/buenaventura/visor/src/bootstrap-table/dist/bootstrap-table.min.css">
+    <script src="/buenaventura/visor/src/bootstrap-table/dist/bootstrap-table.min.js"></script>
+    <script src="/buenaventura/visor/src/bootstrap-table/dist/locale/bootstrap-table-es-ES.min.js"></script>
+	<script type="text/javascript">
+		var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+		(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/66180e681ec1082f04e155fa/1hr6vgi15';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	  })();
+	  </script>
+</body>
+</html>

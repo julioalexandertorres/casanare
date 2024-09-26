@@ -1,0 +1,281 @@
+body {
+    color: #566787;
+    background: #f5f5f5;
+    font-family: 'Varela Round', sans-serif;
+    font-size: 11px;
+}
+/*body, html {
+    font-family: 'Roboto', sans-serif;
+}*/
+.th-inner {
+text-align: center;
+}
+.table-responsive {
+    margin: 0px 0;
+}
+.table-wrapper {
+    min-width: 1000px;
+    background: #fff;
+    padding: 0px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    padding-bottom: 15px;
+    background: #379AD4;
+    color: #fff;
+    padding: 16px 30px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.table-title .btn {
+    color: #566787;
+    float: right;
+    /*font-size: 13px;*/
+    background: #fff;
+    border: none;
+    /*min-width: 50px;*/
+    border-radius: 2px;
+    border: none;
+    outline: none !important;
+    /*margin-left: 10px;*/
+    font-size: 1em;
+    /*padding: 5px 10px;*/
+}
+.table-title .btn:hover, .table-title .btn:focus {
+    color: #566787;
+    background: #f2f2f2;
+}
+.table-title .btn i {
+    float: left;
+    font-size: 21px;
+    margin-right: 5px;
+}
+.table-title .btn span {
+    float: left;
+    margin-top: 2px;
+}
+table.table tr th, table.table tr td {
+    border-color: #e9e9e9;
+    padding: 2px 10px;
+    vertical-align: middle;
+}
+table.table tr th:first-child {
+    width: 60px;
+}
+table.table tr th:last-child {
+    width: 100px;
+}
+table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fcfcfc;
+}
+table.table-striped.table-hover tbody tr:hover {
+    background: #f5f5f5;
+}
+table.table th i {
+    font-size: 13px;
+    margin: 0 5px;
+    cursor: pointer;
+}	
+table.table td:last-child i {
+    opacity: 0.9;
+    font-size: 22px;
+    margin: 0 5px;
+}
+table.table td a {
+    font-weight: bold;
+    color: #566787;
+    display: inline-block;
+    text-decoration: none;
+}
+table.table td a:hover {
+    color: #2196F3;
+}
+table.table td a.settings {
+    color: #2196F3;
+}
+table.table td a.delete {
+    color: #F44336;
+}
+table.table td i {
+    font-size: 19px;
+}
+table.table .avatar {
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.status {
+    font-size: 30px;
+    margin: 2px 2px 0 0;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 10px;
+}
+.text-success {
+    color: #10c469;
+}
+.text-info {
+    color: #62c9e8;
+}
+.text-warning {
+    color: #FFC107;
+}
+.text-danger {
+    color: #ff5b5b;
+}
+.pagination {
+    float: right;
+    margin: 0 0 5px;
+}
+.pagination li a {
+    border: none;
+    font-size: 13px;
+    min-width: 30px;
+    min-height: 30px;
+    color: #999;
+    margin: 0 2px;
+    line-height: 30px;
+    border-radius: 2px !important;
+    text-align: center;
+    padding: 0 6px;
+}
+.pagination li a:hover {
+    color: #666;
+}	
+.pagination li.active a, .pagination li.active a.page-link {
+    background: #03A9F4;
+}
+.pagination li.active a:hover {        
+    background: #0397d6;
+}
+.pagination li.disabled i {
+    color: #ccc;
+}
+.pagination li i {
+    font-size: 16px;
+    padding-top: 6px
+}
+.hint-text {
+    float: left;
+    margin-top: 10px;
+    font-size: 13px;
+}
+.pull-left {
+    display: none;
+}
+.columns {
+  display: none;
+}
+ 
+ #panel_atr{
+    background-color: rgba(128, 128, 128, .5);
+}
+.form-register{
+    width: 95%;
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    border-radius: 7px;
+}
+.form_titulo{
+   background: #379AD4;
+   color: #fff;
+   padding: 20px;
+   text-align: center;
+   font-weight: 100;
+   font-size: 20px;
+   border-top-left-radius: 7px;
+   border-top-right-radius: 7px;
+}
+
+.contenedor-inputs{
+   padding: 10px 30px;
+   display: flex;
+   flex-wrap: wrap; 
+   justify-content: left;
+}
+
+.input-100 {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 3px;
+    border: 1px solid darkgray
+}
+
+.btn-enviar{
+    background: crimson;
+    color:#fff;
+    margin: auto;
+    padding: 10px 40px;
+}
+
+.divform{
+    display: none;
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    z-index: 10;
+    background-color: rgba(128, 128, 128, 0.7);
+    width: 100%;
+    height: 500%;
+    padding-top: 50px;
+}
+
+.divstatics{
+    display: none;
+    position: absolute;
+    top: 0em;
+    left: 0em;
+    z-index: 10;
+    background-color: rgba(128, 128, 128, 0.7);
+    width: 100%;
+    /*height: 500%;*/
+    padding-top: 10px;
+}
+
+.list_form{
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 3px;
+    border: 1px solid darkgray
+}
+
+.label-select{
+    text-align: left;
+}
+
+.dgcAlert {top: 0;position: absolute;width: 100%;display: block;height: 1000px; background: url(http://www.dgcmedia.es/recursosExternos/fondoAlert.png) repeat; text-align:center; opacity:0; display:none; z-index:999999999999999;}
+.dgcAlert .dgcVentana{width: 450px; background: white;min-height: 110px;margin: 0 auto;color: black;padding: 8px;border-radius: 10px;}
+.dgcAlert .dgcVentana .dgcCerrar {height: 25px;width: 25px;float: right; cursor:pointer; background: url(http://www.dgcmedia.es/recursosExternos/cerrarAlert.jpg) no-repeat center center;}
+.dgcAlert .dgcVentana .dgcCerrar2 {height: 5px;width: 5px;}
+.dgcAlert .dgcVentana .dgcMensaje { margin: 0 auto; padding-top: 45px; text-align: center; width: 400px;font-size: 13px;}
+.dgcAlert .dgcVentana .dgcAceptar{background:#09C; bottom:20px; display: inline-block; font-size: 12px; font-weight: bold; height: 24px; line-height: 24px; padding-left: 5px; padding-right: 5px;text-align: center; text-transform: uppercase; width: 75px;cursor: pointer; color:#FFF; margin-top:50px;}
+
+#carga2{
+    position: absolute;
+    top:0%;
+    left:0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 50;
+}
+#imgstaticsgif{
+    position: absolute;
+    top:40%;
+    left:40%;
+    width: 20%;
+    height: 30%;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+

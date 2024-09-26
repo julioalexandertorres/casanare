@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="es">
+  <head>
+        <title>::VISOR GEOGRÁFICO::</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="icon" type="image/png" href="../imagenes/escudo.ico"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> 
+        <link rel="stylesheet" href="src/ol9/ol.css">
+        <link rel="stylesheet" href="src/css/LayersControl.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/olext.css">
+        <link rel="stylesheet" href="css/photo_sphere.css">
+        <link rel="stylesheet" href="demo/demo.css">
+        <link href="sidebars/sidebars.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/vendor/jQuery-QueryBuilder/query-builder.default.min.css">   
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css"> 
+        <link href="https://unpkg.com/tabulator-tables@4.9.1/dist/css/tabulator.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/semantic.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="src/spherejs/shepherd.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.js"></script>
+        <script src="src/app/index_evt/vuacc.js"></script>
+        <script>document.addEventListener('DOMContentLoaded', function () {verificarAcceso();});</script>
+        <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+        <script src="lib/jszip.js"></script>
+        <script src="lib/jszip-utils.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.9.1/dist/js/tabulator.min.js"></script>
+        <script src="sql/js_sql.js"></script>
+        <script src="sql/jsSearch.js"></script>
+        <script src="src/ol9/ol.js"></script>
+        <script src="src/olext/ol-ext.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="src/jquery/jquery-1.12.4.js"></script>
+        <script src="src/jquery/jquery-ui-1.11.2/jquery-ui.js"></script>      
+        <script src="src/app/LayersControl.js"></script>      
+        <script src="src/app/index_evt/tools.js"></script>
+        <script src="src/app/index_evt/f1.js"></script>    
+        <script src="src/consultasSql.js"></script>
+        <script src="src/panorama.js"></script>
+        <script src="src/psv/three.min.js"></script>
+	      <script src="src/psv/polyfill.min.js"></script>
+	      <script src="src/psv/doT.min.js"></script>
+	      <script src="src/psv/uevent.min.js"></script>
+		    <script src="src/psv/photo-sphere-viewer.min.js"></script>
+        <script src="https://kit.fontawesome.com/4cf6deb8db.js" crossorigin="anonymous"></script>
+        <script src="src/pdf.js"></script>
+        <script src="src/proj4/proj4.js"></script>
+        <script src="src/sweetalert/sweetalert.js"></script>  
+  </head>
+
+<body onload="pageL()">
+    <!--<div id="carga2"><img id="imgprocess" src="./image/procesando.gif"/></div>-->
+    <div id="carga2" class="loaderp">
+      <span></span>
+    </div>
+
+
+    <div id="map"></div>
+  
+    <div id="barrabuscar" style="display: none;">
+        <!--<div id='barra_direccion' class="input-group mb-3">
+          <input type="search" name="direccion" id="direccion" class="form-control roboto-regular" placeholder="Buscar Dirección..."/>
+          <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+        </div> -->
+        <div id='barra_sitio' class="input-group mb-3">
+          <input type="search" name="address1" id="address1" class="form-control roboto-regular" placeholder="Buscar Sitio..."/>
+          <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+        </div>
+        <!--<div id='barra_manzana' style='display:none;' class="input-group mb-3">
+          <input type="search" name="manzana" id="manzana" class="form-control roboto-regular" placeholder="Buscar Manzana..."/>
+          <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+        </div>  
+        <div id='barra_codigo' style='display:none;' class="input-group mb-3">
+          <input type="search" name="codigo" id="codigo" class="form-control roboto-regular" placeholder="Buscar Codigo Catastral..."/>
+          <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+        </div>  
+        <div id='barra_propietario' style='display:none;' class="input-group mb-3">
+          <input type="search" name="propietarios" id="propietarios" class="form-control roboto-regular" placeholder="Buscar Nombre de Propietario..."/>
+          <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+        </div>
+        <div id='barra_id_propietario' style='display:none;' class="input-group mb-3">
+          <input type="search" name="cedul" id="cedul" class="form-control roboto-regular" placeholder="Buscar Documento del Propietario..."/>
+          <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+        </div>
+        <div id='barra_matricula' style='display:none;' class="input-group mb-3">
+          <input type="search" name="matricula" id="matricula" class="form-control roboto-regular" placeholder="Buscar Matricula inmobiliaria..."/>
+          <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+        </div>    -->
+    </div>
+
+    <!--menu inferior-->
+    <div class="button-container" id="barraInferior">
+      <!--<div class="BI-range-slider-div">
+        <input type='range' class='opacity BI-range-slider' min='0' max='1' step='0.1' value='0' onchange='ortofotobuenaventura.setVisible(true); ortofotobuenaventura.setOpacity(Number(this.value))'>
+      </div>-->
+      <button class="buttonInf" title="Acercar" onclick="zoomIn()" data-bs-toggle="tooltip">
+        <span class="fa fa-solid fa-magnifying-glass-plus" style="color:#FFFFFF"></span>
+      </button>
+      <button class="buttonInf" title="Alejar" onclick="zoomOut()" data-bs-toggle="tooltip">
+        <span class="fa fa-solid fa-magnifying-glass-minus" style="color:#FFFFFF"></span>
+      </button>
+      <button class="buttonInf" onclick="vistainicial()" title="Centrar mapa" data-bs-toggle="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+          <path d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38 29.8L163 255.7c17.2 4.9 29 20.6 29 38.5v39.9c0 11 6.2 21 16 25.9s16 14.9 16 25.9v39c0 15.6 14.9 26.9 29.9 22.6c16.1-4.6 28.6-17.5 32.7-33.8l2.8-11.2c4.2-16.9 15.2-31.4 30.3-40l8.1-4.6c15-8.5 24.2-24.5 24.2-41.7v-8.3c0-12.7-5.1-24.9-14.1-33.9l-3.9-3.9c-9-9-21.2-14.1-33.9-14.1H257c-11.1 0-22.1-2.9-31.8-8.4l-34.5-19.7c-4.3-2.5-7.6-6.5-9.2-11.2c-3.2-9.6 1.1-20 10.2-24.5l5.9-3c6.6-3.3 14.3-3.9 21.3-1.5l23.2 7.7c8.2 2.7 17.2-.4 21.9-7.5c4.7-7 4.2-16.3-1.2-22.8l-13.6-16.3c-10-12-9.9-29.5 .3-41.3l15.7-18.3c8.8-10.3 10.2-25 3.5-36.7l-2.4-4.2c-3.5-.2-6.9-.3-10.4-.3C163.1 48 84.4 108.9 57.7 193zM464 256c0-36.8-9.6-71.4-26.4-101.5L412 164.8c-15.7 6.3-23.8 23.8-18.5 39.8l16.9 50.7c3.5 10.4 12 18.3 22.6 20.9l29.1 7.3c1.2-9 1.8-18.2 1.8-27.5zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
+      </button>
+      <!--<button class="buttonInf" onclick="vistaCentrosp()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" id="botonCentrosp" class="iconInf">
+          <path d="M408 120c0 54.6-73.1 151.9-105.2 192c-7.7 9.6-22 9.6-29.6 0C241.1 271.9 168 174.6 168 120C168 53.7 221.7 0 288 0s120 53.7 120 120zm8 80.4c3.5-6.9 6.7-13.8 9.6-20.6c.5-1.2 1-2.5 1.5-3.7l116-46.4C558.9 123.4 576 135 576 152V422.8c0 9.8-6 18.6-15.1 22.3L416 503V200.4zM137.6 138.3c2.4 14.1 7.2 28.3 12.8 41.5c2.9 6.8 6.1 13.7 9.6 20.6V451.8L32.9 502.7C17.1 509 0 497.4 0 480.4V209.6c0-9.8 6-18.6 15.1-22.3l122.6-49zM327.8 332c13.9-17.4 35.7-45.7 56.2-77V504.3L192 449.4V255c20.5 31.3 42.3 59.6 56.2 77c20.5 25.6 59.1 25.6 79.6 0zM288 152a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+      </button>-->
+      <button class="buttonInf" onclick="medir()" title="Medir" data-bs-toggle="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" id="botonMedir" class="iconInf">
+          <path d="M177.9 494.1c-18.7 18.7-49.1 18.7-67.9 0L17.9 401.9c-18.7-18.7-18.7-49.1 0-67.9l50.7-50.7 48 48c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-48-48 41.4-41.4 48 48c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-48-48 41.4-41.4 48 48c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-48-48 41.4-41.4 48 48c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-48-48 50.7-50.7c18.7-18.7 49.1-18.7 67.9 0l92.1 92.1c18.7 18.7 18.7 49.1 0 67.9L177.9 494.1z"/></svg>
+      </button>
+      <button class="buttonInf" onclick="menuPrintDialog()" title="Imprimir" data-bs-toggle="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+          <path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+      </button>
+      <button class="buttonInf" onclick="menuVercoordenada()" title="Ver coordenada" data-bs-toggle="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" id="botonVercoordenada" class="iconInf">
+          <path d="M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32H290.5l11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3H32c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64H64C46.3 64 32 49.7 32 32zM160 384h64v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384z"/></svg>
+      </button>
+      <button class="buttonInf" title="Buscar coordenada" data-bs-toggle="tooltip" data-toggle="modal" data-target="#buscarCoord">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+          <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM288 176c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 48.8 46.5 111.6 68.6 138.6c6 7.3 16.8 7.3 22.7 0c22.1-27 68.6-89.8 68.6-138.6zm-112 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>
+      </button>
+      <button class="buttonInf" onclick="limpiar()" title="Limpiar mapa" data-bs-toggle="tooltip">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+          <path d="M566.6 54.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192-34.7-34.7c-4.2-4.2-10-6.6-16-6.6c-12.5 0-22.6 10.1-22.6 22.6v29.1L364.3 320h29.1c12.5 0 22.6-10.1 22.6-22.6c0-6-2.4-11.8-6.6-16l-34.7-34.7 192-192zM341.1 353.4L222.6 234.9c-42.7-3.7-85.2 11.7-115.8 42.3l-8 8C76.5 307.5 64 337.7 64 369.2c0 6.8 7.1 11.2 13.2 8.2l51.1-25.5c5-2.5 9.5 4.1 5.4 7.9L7.3 473.4C2.7 477.6 0 483.6 0 489.9C0 502.1 9.9 512 22.1 512l173.3 0c38.8 0 75.9-15.4 103.4-42.8c30.6-30.6 45.9-73.1 42.3-115.8z"/></svg>
+      </button>
+    </div>
+
+    <!--menu navegar a centro poblado-->
+    <div class="inputIrcentrop roboto-regular" id="inputIrcentrop">
+      <button class="value" onclick="gotoCP('cabecera')">01. &nbsp;Cabecera Municipal</button>
+      <button class="value" onclick="gotoCP('aguaclara')">02. &nbsp;Agua Clara</button>
+      <button class="value" onclick="gotoCP('bajocalima')">03. &nbsp;Bajo Calima</button>
+      <button class="value" onclick="gotoCP('lacontra')">04. &nbsp;La Contra</button>
+      <button class="value" onclick="gotoCP('cisneros')">05. &nbsp;Cisneros</button>
+      <button class="value" onclick="gotoCP('cordoba')">06. &nbsp;Cordoba</button>
+      <button class="value" onclick="gotoCP('elcrucero')">07. &nbsp;El Crucero</button>
+      <button class="value" onclick="gotoCP('caminoviejo')">08. &nbsp;Camino Viejo km 40</button>
+      <button class="value" onclick="gotoCP('buenosaires')">09. &nbsp;Buenos Aires</button>
+      <button class="value" onclick="gotoCP('campohermoso')">10. &nbsp;Campo Hermoso</button>
+      <button class="value" onclick="gotoCP('guaima')">11. &nbsp;Guaima</button>
+      <button class="value" onclick="gotoCP('juanchaco')">12. &nbsp;Juanchaco</button>
+      <button class="value" onclick="gotoCP('labarra')">13. &nbsp;La Barra</button>
+      <button class="value" onclick="gotoCP('ladelfina')">14. &nbsp;La Delfina</button>
+      <button class="value" onclick="gotoCP('ellimones')">15. &nbsp;El Limones</button>
+      <button class="value" onclick="gotoCP('katanga')">16. &nbsp;Katanga</button>
+      <button class="value" onclick="gotoCP('callelarga')">17. &nbsp;Calle Larga</button>
+      <button class="value" onclick="gotoCP('ladrilleros')">18. &nbsp;Ladrilleros</button>
+      <button class="value" onclick="gotoCP('pianguita')">19. &nbsp;Pianguita</button>
+      <button class="value" onclick="gotoCP('labocana')">20. &nbsp;La Bocana</button>
+      <button class="value" onclick="gotoCP('puntasoldado')">21. &nbsp;Punta Soldado</button>
+      <button class="value" onclick="gotoCP('bendiciones')">22. &nbsp;Bendiciones</button>
+      <button class="value" onclick="gotoCP('sancipriano')">23. &nbsp;San Cipriano</button>
+      <button class="value" onclick="gotoCP('sanmarcos')">24. &nbsp;San Marcos</button>
+      <button class="value" onclick="gotoCP('labalastrera')">25. &nbsp;La Balastrera</button>
+      <button class="value" onclick="gotoCP('llanobajo')">26. &nbsp;Llano Bajo</button>
+      <button class="value" onclick="gotoCP('triana')">27. &nbsp;Triana</button>
+      <button class="value" onclick="gotoCP('umane')">28. &nbsp;Umane</button>
+      <button class="value" onclick="gotoCP('villaestela')">29. &nbsp;Villa Estela</button>
+      <button class="value" onclick="gotoCP('elsalto')">30. &nbsp;El Salto</button>
+      <button class="value" onclick="gotoCP('sabaleta')">31. &nbsp;Sabaleta</button>
+      <button class="value" onclick="gotoCP('zacarias')">32. &nbsp;Zacarias</button>
+      <button class="value" onclick="gotoCP('zaragosa')">33. &nbsp;Zaragosa</button>
+      <button class="value" onclick="gotoCP('quebradapericos')">34. &nbsp;Quebrada Pericos</button>
+      <button class="value" onclick="gotoCP('laspalmas')">35. &nbsp;Las Palmas</button>
+    </div>
+
+    <div id="center-element"></div>
+    <div class="modal-backdropshepherdpro" id="modal-backdropshepherdpro"></div>
+
+    <div class="modal fade" id="generarIA" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form class="form-horizontal" method="post" action="">
+            <div class="modal-header">
+              <h6 class="modal-title w-100 text-center roboto-regular" id="exampleModalLabel">Consultas con IA</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!--<div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radioC1" value="selectCol1" checked>
+                <label class="form-check-label" for="radioC1">Consulta con una tabla</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radioC2" value="selectCol2">
+                <label class="form-check-label" for="radioC2">Consulta con dos tablas</label>
+              </div>-->
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label">Seleccione nombre del esquema:</label>
+                    <select id="primerListEsq" name="primerListEsq" class="form-control" onchange="datosesq('primerIA')">
+                      <option selected disabled>Seleccione...</option>
+                      <option value="vias">Inventario vial</option>
+                      <option value="pot_casanare">POT</option>
+                      <option value="cartografia_basica">Cartografía Básica</option>
+                    </select>
+                  </div>
+                </div>
+                <!--<div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">Seleccione nombre del esquema:</label>
+                    <select id="segundoListEsq" name="segundoListEsq" class="form-control" onchange="datosesq('segundoIA')">
+                      <option selected disabled>Seleccione...</option>
+                      <option value="catastro">catastro</option>
+                      <option value="pgirs">pgirs</option>
+                      <option value="dane">dane</option>
+                      <option value="gestion_del_riesgo">gestion_del_riesgo</option>
+                      <option value="restitucion">restitucion</option>
+                      <option value="buenaventura360">buenaventura360</option>
+                    </select>
+                  </div>
+                </div>-->
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label" id="labellistnomtabla1" style="display: none;">Seleccione la tabla a consultar:</label>
+                    <select id="listnomtabla1" name="listnomtabla1" style="display: none;" class="form-control" onchange="datostab('datostabIA1')"></select>
+                  </div>
+                </div>
+                <!--<div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label" id="labellistnomtabla2" style="display: none;">Seleccione la tabla a consultar:</label>
+                    <select id="listnomtabla2" name="listnomtabla2" style="display: none;" class="form-control" onchange="datostab('datostabIA2')"></select>
+                  </div>
+                </div>-->
+              </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label class="control-label" id="labelcolumnAI1" style="display: none;">Seleccione una columna:</label>
+                    <select id="columnAI1" name="columnAI1" style="display: none;" class="form-control" onchange="datostabatrib('AI1')"></select>
+                  </div>
+                </div>
+                <!--<div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label" id="labelcolumnAI2" style="display: none;">Seleccione una columna:</label>
+                    <select id="columnAI2" name="columnAI2" style="display: none;" class="form-control" onchange="datostabatrib('AI2')"></select>
+                  </div>
+                </div>-->
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <select id="ejemColumnAI1" name="ejemColumnAI1" class="form-control" style="display: none;" size="5" disabled></select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <select id="ejemColumnAI2" name="ejemColumnAI1" class="form-control" style="display: none;" size="5" disabled></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <div class="sender-area">
+                <div class="input-place">
+                  <input id="inputIA" name="inputIA" placeholder="Escriba su consulta..." class="send-input" type="text">
+                  <div class="send" onclick="aplicarFilterIA()">
+                    <svg class="send-icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+                      <g>
+                        <g>
+                          <path fill="#6B6C7B" d="M481.508,210.336L68.414,38.926c-17.403-7.222-37.064-4.045-51.309,8.287C2.86,59.547-3.098,78.551,1.558,96.808 L38.327,241h180.026c8.284,0,15.001,6.716,15.001,15.001c0,8.284-6.716,15.001-15.001,15.001H38.327L1.558,415.193 c-4.656,18.258,1.301,37.262,15.547,49.595c14.274,12.357,33.937,15.495,51.31,8.287l413.094-171.409 C500.317,293.862,512,276.364,512,256.001C512,235.638,500.317,218.139,481.508,210.336z"></path>
+                        </g>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="modal fade" id="generarmapa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form class="form-horizontal" method="post" action="">
+            <div class="modal-header">
+              <h6 class="modal-title w-100 text-center roboto-regular" id="exampleModalLabel">Documentos</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label class="control-label">Seleccione la temática:</label>
+                <div class="col-md-12">
+                  <select id="gmapas" name="gmapas" class="form-control" onchange="llenarlistmapas()">
+                    <option value="seleccione">Seleccione...</option>
+                    <option value="invvial">Inventario vial</option>
+                    <option value="pot">POT</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Seleccione el plano:</label>
+                <div id="seglist" style="display:none;" class="col-md-12">
+                  <select id="gpdf" name="gpdf" class="form-control">
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="shepherd-button shepherd-button-siguiente" onclick="descargarmapa()">Ver en PDF</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="estadisticmap" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <form class="form-horizontal" method="post" action="">
+                  <div class="modal-header">
+                      <h6 class="modal-title w-100 text-center roboto-regular" id="exampleModalLabel">Reporte Estadístico</h6>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="control-group">
+                          <label class="control-label">Seleccione la Temática:</label>
+                          <div class="col-md-12">
+                            <select id="estmap" name="estmap" class="form-control" onchange="datosesq(id)">
+                              <option selected disabled>Seleccione...</option>
+                              <option value="vias">Inventario vial</option>
+                              <option value="pot_casanare">POT</option>
+                              <option value="cartografia_basica">Cartografía Básica</option>                                                 
+                            </select>
+                          </div>
+                        </div>
+                      
+                      <div class="control-group">
+                        <br><label id = "labeltablasbaseEst" class="control-label" style="display: none;">Seleccione la Tabla a consultar:</label>
+                        <div class="col-md-12">
+                          <select id="tablasbaseEst" name="tablasbaseEst" class="form-control" style="display: none;" onchange="datostab(id)"></select>
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <br><label for="datosatribest" id="labeldatosatribest" class="control-label" style="display: none;">Seleccione una columna de la tabla: </label>
+                        <div class="col-md-12">
+                          <select id="datosatribest" name="datosatribest" class="form-control" style="display: none;" onchange="datostabatrib(id)"></select>
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <br><label for="ejemColumn" id="labelejemColumn" class="control-label" style="display: none;">Ejemplo de datos dentro de la columna:</label>
+                        <div class="col-md-12">
+                          <select id="ejemColumn" name="ejemColumn" class="form-control" size="5" disabled style="display: none;"></select>
+                        </div>
+                      </div>
+                              
+                  <div class="modal-footer" id="botonesReportest" style="display: none;">
+                      <!--<button type="button" id="pieEst" class="btn btn-outline-success" onclick="generarGraficos(id)"><i class="fa-solid fa-chart-pie"></i>&nbsp;&nbsp;Generar gráfico</button>-->
+                      <button type="button" id="pieEst" class="shepherd-button-skip shepherd-button" onclick="generarGraficos(id)"><i class="fa-solid fa-chart-pie"></i>&nbsp;&nbsp;Generar gráfico</button>
+                      <!--<button type="button" id="chartEst" class="btn btn-outline-secondary" onclick="generarGraficos(id)"><i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;Generar gráfico</button>-->
+                      <button type="button" id="chartEst" class="shepherd-button-siguiente shepherd-button" onclick="generarGraficos(id)"><i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;Generar gráfico</button>
+                  </div>
+                </div>
+              </form>
+          </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="cambiarcontrasena" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form class="form-horizontal">
+            <div class="modal-header">
+              <h5 class="modal-title" id="titulocambiarcontrasena">Cambiar Contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="control-group">
+                <label class="control-label">Ingrese la nueva contraseña (solo letras y números):</label>
+                  <div class="col-md-12">
+                    <div class="input-group mb-3">
+                      <input type="password" id="passchang" value="" class="form-control" autocomplete="new-password" required/>
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button">
+                            <span class="fa fa-eye" style="color:#9E9E9E; cursor: pointer;" onclick="mostrarContrasena()"></span>
+                          </button>
+                        </div>
+                    </div>
+                  </div>              
+                <div class="modal-footer">
+                  <!--<button type="button" id="enviarnuevacontrasena" class="btn btn-outline-primary">Guardar</button>-->
+                  <button type="button" disabled class="btn btn-outline-primary">Guardar</button>
+                </div>
+              </div>
+            </div>  
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="repositorio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form class="form-horizontal" method="post" action="">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Repositorio</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="control-group">
+                <label class="control-label">Seleccione la carpeta:</label>
+                  <select class="form-control" id="foldersrepo" onchange="verInforepo()"></select>
+                  <select class="form-control" id="downloadInforepo" style="display: none;" onchange="activeButtonrepo()" multiple></select>
+              </div>
+              <div class="modal-footer">
+              <button type="button" id="descargarInforepo" style="display: none;" class="btn btn-outline-primary" onclick="descargarRepo()" disabled>Descargar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--modal buscar por coordenadas-->
+    <div class="modal fade" id="buscarCoord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form class="form-horizontal" method="post" action="">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Ubicar coordenadas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="control-group">
+                <div class="col-md-12 mb-3">
+                  <label class="control-label"><b>Seleccione un sistema de referencia:</b></label>
+                  <select id="selecEpsg" name="estmap" class="form-control" onchange="selEpsg()">
+                    <option selected disabled>Seleccione...</option>
+                    <option value="epsg4326">WGS 84 (EPSG:4326)</option>
+                    <option value="epsg3115">MAGNA-SIRGAS / Colombia west zone (EPSG:3115)</option>
+                    <option value="epsg9377">Origen Nacional (EPSG:9377)</option>
+                  </select>
+                </div>
+                <div class="row" id="menuEpsg4326"> 
+                  <div class="col-md-6 mb-3">
+                    <label class="control-label"><b>Latitud (N):</b></label>
+                    <input type="text" id="inputLat4326" class="form-control" placeholder="3.88094">
+                  </div>                         
+                  <div class="col">
+                    <label class="control-label"><b>Longitud (W):</b></label>
+                    <input type="text" id="inputLon4326" class="form-control" placeholder="-77.02347">
+                  </div>
+                </div>
+                <div class="row" id="menuEpsg3115"> 
+                  <div class="col-md-6 mb-3">
+                    <label class="control-label"><b>Norte (m):</b></label>
+                    <input type="text" id="inputLat3115" class="form-control" placeholder="920906">
+                  </div>                         
+                  <div class="col">
+                   <label class="control-label"><b>Este (m):</b></label>
+                   <input type="text" id="inputLon3115" class="form-control" placeholder="1006001">
+                  </div>
+                </div>
+                <div class="row" id="menuEpsg9377"> 
+                  <div class="col-md-6 mb-3">
+                    <label class="control-label"><b>Norte (m):</b></label>
+                    <input type="text" id="inputLat9377" class="form-control" placeholder="1987908">
+                  </div>                         
+                  <div class="col">
+                    <label class="control-label"><b>Este (m):</b></label>
+                    <input type="text" id="inputLon9377" class="form-control" placeholder="4553120">
+                  </div>
+                </div>                         
+              </div>
+            </div>                                              
+            <div class="modal-footer">
+              <button type="button" id="irCoord" class="btn btn-secondary" data-dismiss="modal" onclick="buscarCoorEpsg()"><i class="fa-solid fa-location-crosshairs"></i>&nbsp;&nbsp;Ir a la coordenada</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="EstatModal" tabindex="-1" role="dialog">
+      <!--<div class="modal-dialog modal-lg">-->
+      <div class="modal-dialog modal-left ui-draggable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title w-100 text-center roboto-regular" id="exampleModalLabel"></h6>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"style="margin-top: 2px; color: white;" onclick="cerrarSQL()"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="container" id="contEst"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>	
+      <iframe name="marco" style="display: none;" id="marco"></iframe>
+      <iframe name="marco2" style="display: none;" id="marco2"></iframe>
+      <iframe name="marco5" style="display: none;" id="marco5"></iframe>
+      <iframe name="repo" style="display: none;" id="repo"></iframe>
+      <a style="display: none;" id="closeframe" onclick="cerrariframe()"><i style="background-color: white;" class="fa fa-mail-reply-all fa-2x"></i></a>
+      <!--<img id="closeframe" style="display: none;" src="./iconos/salir.png" onclick="cerrariframe()">-->
+      <iframe name="marco3" style="display: none;" id="marco3"></iframe>
+      <button id="botoncerrarstreetview" onclick="ocultarstreetview();" style="background:url('./imagenes/ocultar.png'); background-repeat:no-repeat; display: none;"></button>
+      <button id="botonmostrarstreetview" onclick="mostrarstreetview();" style="background:url('./imagenes/mostrar.png'); background-repeat:no-repeat; display: none;"></button>
+    </div>
+
+    <div id="container3" style="display: none;"></div>
+    <div id="containerhc1" style="position: absolute; top: 0px; right: 0px; width: 30%; height: 50%; z-index: 100; display: none;"></div>
+    <div id="containerhc2" style="position: absolute; bottom: 0px; right: 0px; width: 30%; height: 50%; z-index: 100; display: none;"></div>   
+ 
+    <!--input para copiar wms en el portapapeles-->
+    <input id="inputinvisible" aria-hidden="false" style="display: none;"/>
+
+        <div>
+          <select id="projection" class="form-select form-select-sm">
+            <option value="EPSG:4326">EPSG:4326</option>
+            <option value="EPSG:3115">EPSG:3115</option>
+            <option value="EPSG:9377">EPSG:9377</option>
+          </select>
+          <div id="mouse-position"></div>
+        </div>
+    
+        <div class="btn-group-vertical" id="grupoherramientas" role="group" >
+          <button id="menuControlcapas" type="button" class="btn btn-default border menusupizq" aria-label="Left Align" title="Capas" onclick="menuLayers()" data-bs-toggle="tooltip">
+            <span class="fa fa-bars" style="color:#FFFFFF"></span>
+          </button>
+          <button type="button" id="menuCambiarcontrasena" class="btn btn-default border menusupizq" data-toggle="modal" data-target="#cambiarcontrasena" title="Cambiar Contraseña" data-bs-toggle="tooltip">
+            <span class="fa fa-key" style="color: #FFFFFF;"></span>
+          </button>
+          <a href="#" id="menuRepositorio" class="btn btn-default border menusupizq" data-toggle="modal" data-target="#repositorio" onclick="openRepository()" title="Repositorio" data-bs-toggle="tooltip" data-bs-placement="right">
+            <span class="fa fa-archive" style="color: #FFFFFF;"></span>
+          </a>
+          <button id="menuManual" type="button" class="btn btn-default border menusupizq" data-toggle="modal" onclick="openmanual()" title="Manual de Usuario" data-bs-toggle="tooltip">
+            <!--<span class="fa fa-book" style="color: #FFFFFF;"></span>-->
+            <span class="fa fa-question" style="color: #FFFFFF;"></span>
+          </button>
+          <button id="menuCerrarsesion" type="button" class="btn btn-default border menusupizq" data-toggle="modal" onclick="cerrarsesion()" title="Cerrar sesión" data-bs-toggle="tooltip">
+            <span class="fa-solid fa-right-from-bracket" style="color: #FFFFFF;"></span>
+          </button>
+        </div>
+    
+
+        <div id="medidas" class="radio-inputs">
+          <label>
+            <input checked="" class="radio-input" type="radio" id="radio1" name="gender" value="length">
+              <span class="radio-tile">
+                <span class="radio-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512 96c0 50.2-59.1 125.1-84.6 155c-3.8 4.4-9.4 6.1-14.5 5H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c53 0 96 43 96 96s-43 96-96 96H139.6c8.7-9.9 19.3-22.6 30-36.8c6.3-8.4 12.8-17.6 19-27.2H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-53 0-96-43-96-96s43-96 96-96h39.8c-21-31.5-39.8-67.7-39.8-96c0-53 43-96 96-96s96 43 96 96zM117.1 489.1c-3.8 4.3-7.2 8.1-10.1 11.3l-1.8 2-.2-.2c-6 4.6-14.6 4-20-1.8C59.8 473 0 402.5 0 352c0-53 43-96 96-96s96 43 96 96c0 30-21.1 67-43.5 97.9c-10.7 14.7-21.7 28-30.8 38.5l-.6 .7zM128 352a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM416 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+                </span>
+                <span class="radio-label">Distancia</span>
+              </span>
+          </label>
+          <label>
+            <input class="radio-input" type="radio" id="radio2" name="gender" value="area">
+            <span class="radio-tile">
+              <span class="radio-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M96 151.4V360.6c9.7 5.6 17.8 13.7 23.4 23.4H328.6c0-.1 .1-.2 .1-.3l-4.5-7.9-32-56 0 0c-1.4 .1-2.8 .1-4.2 .1c-35.3 0-64-28.7-64-64s28.7-64 64-64c1.4 0 2.8 0 4.2 .1l0 0 32-56 4.5-7.9-.1-.3H119.4c-5.6 9.7-13.7 17.8-23.4 23.4zM384.3 352c35.2 .2 63.7 28.7 63.7 64c0 35.3-28.7 64-64 64c-23.7 0-44.4-12.9-55.4-32H119.4c-11.1 19.1-31.7 32-55.4 32c-35.3 0-64-28.7-64-64c0-23.7 12.9-44.4 32-55.4V151.4C12.9 140.4 0 119.7 0 96C0 60.7 28.7 32 64 32c23.7 0 44.4 12.9 55.4 32H328.6c11.1-19.1 31.7-32 55.4-32c35.3 0 64 28.7 64 64c0 35.3-28.5 63.8-63.7 64l-4.5 7.9-32 56-2.3 4c4.2 8.5 6.5 18 6.5 28.1s-2.3 19.6-6.5 28.1l2.3 4 32 56 4.5 7.9z"/></svg>
+              </span>
+              <span class="radio-label">Área</span>
+            </span>
+          </label>
+        </div>
+
+        <!--<main style="position: fixed;"> 
+          <div class="btn-group-vertical">  
+            <ul class="nav nav-pills nav-flush flex-column mb-auto text-center" style="background-color: #036AB5;">
+              <li id="buscarporAtrib" onclick="ocultarbarra()" style="cursor: pointer;">
+                <a class="nav-link py-3 border-bottom" title="Buscar" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  <span class="fa fa-search" style="color: #FFFFFF;"></span>
+                </a>           
+              </li>     
+              <li id="menuConsultasavanzadas">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" data-target="#filterModal" title="Consultar base de datos" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <span class="fa fa-database" style="color: #FFFFFF;"></span>
+                </a>
+              </li>
+              <li id="menuConsultasia">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" data-target="#generarIA" title="Consultas IA" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <span class="fa fa-solid fa-comment-dots" style="color: #FFFFFF;"></span>
+                </a>
+              </li>
+              <li id="menuMapaspdf">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" data-target="#generarmapa" onclick="llenarlistmapas()" title="Mapas en pdf" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <span class="fa fa-map" style="color: #FFFFFF;"></span>
+                </a>
+              </li>  
+              <li id="menuCargarwms">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" onclick="cargarWms()" title="Cargar capas externas" data-bs-toggle="tooltip" data-bs-placement="right">
+                  <span class="fa fa-cloud-upload" style="color: #FFFFFF;"></span>
+                </a>
+              </li>
+              <li id="menuActivar360">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" data-target="#" title="Fotográfias 360" data-bs-toggle="tooltip" onclick="load360()" data-bs-placement="right">
+                <span class="fa fa-street-view" style="color: #FFFFFF;"></span>
+                </a>
+              </li> 
+              <li id="menuReportesestadisticos">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" data-target="#estadisticmap" title="Estadisticas" data-bs-toggle="tooltip" data-bs-placement="right">
+                <span class="fa fa-bar-chart" style="color: #FFFFFF;"></span>
+                </a>
+              </li>
+              <li id="menuVisor3d">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" data-target="#" data-bs-toggle="tooltip" title="Visualización 3D" onclick="openmdtpart()" data-bs-placement="right" style="color:#FFFFFF; font-weight: bold;"><button class="btn3d">3D</button></a>
+              </li>
+              <li id="menuComparacionimagenes">
+                <a href="#" class="nav-link py-3 border-bottom" data-toggle="modal" data-target="#" title="Comparar imagenes" data-bs-toggle="tooltip" onclick="comparacion()" data-bs-placement="right">
+                  <span class="fa fa-object-group" style="color: #FFFFFF;"></span>
+                </a>
+              </li>
+              <li id="openlayers-control-container"></li>
+            </ul>
+          </div>
+        </main>-->
+        
+
+        <div class="btn-group-vertical" id="grupoherramientasprincipal" role="group" >
+          <button type="button" id="buscarporAtrib" class="btn btn-default border menusupder" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="ocultarbarra()">
+            <span class="fa fa-search"></span>
+          </button>
+          <button type="button" id="menuConsultasavanzadas" data-toggle="modal" data-target="#filterModal" class="btn btn-default border menusupder" title="Consulta Avanzada" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <span class="fa fa-database"></span>
+          </button>
+          <button type="button" id="menuConsultasia" data-toggle="modal" data-target="#generarIA" class="btn btn-default border menusupder" title="Consulta IA" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <span class="fa fa-comment-dots"></span>
+          </button>
+          <button type="button" id="menuMapaspdf" data-toggle="modal" data-target="#generarmapa" class="btn btn-default border menusupder" title="Documentos" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="llenarlistmapas()">
+            <span class="fa fa-file-contract"></span>
+          </button>
+          <button type="button" id="menuCargarwms" data-toggle="modal" class="btn btn-default border menusupder" title="Cargar capas externas" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="cargarWms()">
+            <span class="fa fa-cloud-upload"></span>
+          </button>
+          <!--<button type="button" id="menuActivar360" data-toggle="modal" class="btn btn-default border menusupder" title="Fotografías 360" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="load360()">
+            <span class="fa fa-street-view"></span>
+          </button>-->
+          <button type="button" id="menuReportesestadisticos" data-toggle="modal" data-target="#estadisticmap" class="btn btn-default border menusupder" title="Estadísticas" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <span class="fa fa-bar-chart"></span>
+          </button>
+          <button type="button" id="menuVisor3d" data-toggle="modal" class="btn btn-default border menusupder" title="Visor 3D" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="openmdtpart()">
+            <span class="fa fa-cube"></span>
+          </button>
+          <!--<button type="button" id="menuComparacionimagenes" data-toggle="modal" class="btn btn-default border menusupder" title="Comparación Multitemporal" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="comparacion()">
+            <span class="fa fa-object-group"></span>
+          </button>-->        
+        </div>
+    
+    <!--<img id="logobuen" src="../imagenes/logo_buenaventura.png"/>-->
+
+        <div class="modal" id="panel_infwms" tabindex="-1" role="dialog" aria-labelledby="panel_infwmsLabel" aria-hidden="true">
+              <div class="modal-dialog modal-left" role="document">
+                  <div class="modal-content" style="max-height: 25em;">
+                    <div class="modal-header">
+                      <h6 class="modal-title" id="titulotablawms"></h6>
+                        <button type="button" class="close" onclick='ocultarpanelatributos();' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body" style="padding:5px 10px 5px; overflow-y:auto; max-height:40em;">
+                      <table class="table table-sm table-hover" id="tblattwms" style="font-size: 11px;"></table>
+                      <div id="table-dynamic"></div>
+                    </div>
+                  </div>
+              </div>
+        </div>
+
+
+        <!--<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Título del Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                
+              </div>
+            </div>
+          </div>
+        </div>-->
+
+        <div class="modal" id="panel_atr" >
+          <div class="modal-dialog modal-left" role="document">
+            <div class="modal-content">
+              <div class="modal-header"><h6 class="modal-title w-100 text-center roboto-regular" id="titulotabla"></h6><button type="button" class="close" onclick='ocultarpanelatributos();' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body" style="padding:5px 10px 5px; overflow-y:auto; max-height:40em;">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item"><a class="nav-link active roboto-regular" id="home-tab" data-toggle="tab" href="#catastro" role="tab" aria-controls="home" aria-selected="true">Catastro</a></li>
+                    <li class="nav-item"><a class="nav-link roboto-regular" id="profile-tab" data-toggle="tab" href="#pot" role="tab" aria-controls="profile" aria-selected="false" onclick="datosPot()">Planeación</a></li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="catastro" role="tabpanel" aria-labelledby="catastro-tab">
+                      <table class="table table-sm table-hover" id="tblatt"></table>
+                    </div>     
+                    <div class="tab-pane fade" id="pot" role="tabpanel" aria-labelledby="pot-tab">
+                      <table class="table table-sm table-hover" id="tblattpot"></table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--modal manzana, propietario-->
+        <div class="modal" id="panel_mz" >
+          <div class="modal-dialog modal-left" role="document">
+            <div class="modal-content">
+              <div class="modal-header"><h6 class="modal-title w-100 text-center" id="titulotablaMz"></h6><button type="button" class="close" onclick='ocultarpanelatributos();' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+              <div class="modal-body" style="padding:5px 10px 5px; overflow-y:auto; max-height:40em;"><table class="table table-sm table-hover table-striped" id="tblattmz"></table></div>
+            </div>
+          </div>
+        </div>
+
+        <!--modal descargar wms-->
+        <div class="modal" id="panelDownloadwms">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="width: 220px; background-color: #E8E8E8;">
+              <div class="modal-header">
+                <h6 class="modal-title" id="labelTablaDescargarwms" style="padding-right: 4em;"><b>Descargar capa</b></h6>
+                <button type="button" class="close" onclick='ocultarpanelatributos();' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <div id="contenedorSelectYBoton"></div>           
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--visualización 3D-->
+        <!--<div class="modal" id="panel_iframe">
+          <div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="max-width: 90%;">
+            <div class="modal-content" style="height: 40em;">
+              <div class="modal-header">
+                <h6 class="modal-title w-100 text-center" id="titulotablaIframe"></h6>
+                <button type="button" class="close" onclick='ocultarpanelatributos();' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body" style="padding:5px 10px 5px">
+                <table id="tableiframe"><iframe name="marco4" style="display: none;" id="marco4"></iframe></table>  
+              </div>
+            </div>
+          </div>
+        </div>-->
+
+        <!--div reajustable-->
+        <div id="panel_iframe">
+          <div>
+            <div class="d-flex justify-content-between align-items-center" style="background-color: #013F6C; padding:0.5em;">
+                <a class="modal-title w-100 text-center roboto-bold" style="font-size: 18px;" id="tituloModal3D"></a>
+                <button type="button" id="botonCerrar3d" onclick="cerrar3D()">X</button>
+            </div>
+          </div>
+          <iframe name="marco4" style="display: none;" id="marco4">
+          </iframe>
+        </div>
+
+        <!--<div id="herramientas" class='container'>
+          <div id="layertree" class="tree" style="box-shadow: 0px 1px 8px 1px; display: none;"></div>       
+        </div> -->
+
+        <div id="herramientas" class='container'>
+          <div id="layer-control" style="display: none;">
+            <div id="layer-header">
+              <div class="roboto-bold">CONTROL DE CAPAS</div>
+              <input class='inputFindcapas roboto-regular'placeholder='Buscar capa por nombre...' type='search' id='searchLayer' onkeyup='filterLayers()'>
+            </div>
+            <ul id="layertree" class="tree"></ul>
+          </div>
+        </div>
+    
+        <div id="tablecontainer" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-xl" style="max-width: 90%;">
+            <div class="modal-content">
+              <div class="modal-header" style="display: flex; justify-content: end; padding-top: 0px; padding-bottom: 0px; background-color: #036AB5; color:white;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top: 2px; color: white;" onclick="cerrarResult()">&times;</button>     
+              </div>
+              <div class="modal-body">
+                
+              <div id="toolbar">
+                <!--<div class="btn-group" role="group">-->
+                  <div class="btn-group">
+                    <!--<button type="button" class="btn btn-primary btn-sm" style="background-color: #134375; border-color: #134375;" id="download-excel-btn">Exportar Excel</button>-->
+                    <button class="Documents-btn" id="download-excel-btn">
+                      <span class="folderContainer">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 146 113"
+                          height="113"
+                          width="146"
+                          class="fileBack"
+                        >
+                          <path
+                            fill="url(#paint0_linear_117_4)"
+                            d="M0 4C0 1.79086 1.79086 0 4 0H50.3802C51.8285 0 53.2056 0.627965 54.1553 1.72142L64.3303 13.4371C65.2799 14.5306 66.657 15.1585 68.1053 15.1585H141.509C143.718 15.1585 145.509 16.9494 145.509 19.1585V109C145.509 111.209 143.718 113 141.509 113H3.99999C1.79085 113 0 111.209 0 109V4Z"
+                          ></path>
+                          <defs>
+                            <linearGradient
+                              gradientUnits="userSpaceOnUse"
+                              y2="95.4804"
+                              x2="72.93"
+                              y1="0"
+                              x1="0"
+                              id="paint0_linear_117_4"
+                            >
+                              <stop stop-color="#8F88C2"></stop>
+                              <stop stop-color="#5C52A2" offset="1"></stop>
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 88 99"
+                          height="99"
+                          width="88"
+                          class="filePage"
+                        >
+                          <rect fill="url(#paint0_linear_117_6)" height="99" width="88"></rect>
+                          <defs>
+                            <linearGradient
+                              gradientUnits="userSpaceOnUse"
+                              y2="160.5"
+                              x2="81"
+                              y1="0"
+                              x1="0"
+                              id="paint0_linear_117_6"
+                            >
+                              <stop stop-color="white"></stop>
+                              <stop stop-color="#686868" offset="1"></stop>
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                    
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 160 79"
+                          height="79"
+                          width="160"
+                          class="fileFront"
+                        >
+                          <path
+                            fill="url(#paint0_linear_117_5)"
+                            d="M0.29306 12.2478C0.133905 9.38186 2.41499 6.97059 5.28537 6.97059H30.419H58.1902C59.5751 6.97059 60.9288 6.55982 62.0802 5.79025L68.977 1.18034C70.1283 0.410771 71.482 0 72.8669 0H77H155.462C157.87 0 159.733 2.1129 159.43 4.50232L150.443 75.5023C150.19 77.5013 148.489 79 146.474 79H7.78403C5.66106 79 3.9079 77.3415 3.79019 75.2218L0.29306 12.2478Z"
+                          ></path>
+                          <defs>
+                            <linearGradient
+                              gradientUnits="userSpaceOnUse"
+                              y2="82.8317"
+                              x2="66.9106"
+                              y1="8.71323"
+                              x1="38.7619"
+                              id="paint0_linear_117_5"
+                            >
+                              <stop stop-color="#C3BBFF"></stop>
+                              <stop stop-color="#51469A" offset="1"></stop>
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </span>
+                      <p class="text">Exportar Excel</p>
+                    </button>
+                  </div>
+                <span id="feature-count" class="text-muted" style="padding-left: 15px;"></span>
+              </div>
+              <table id="table" class="table tablesql"></table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="chartModal" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-body">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="myDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <!--<a href="#" id="consulta_direccion" class="dropdown-item" onclick="mostrar(id)">Consulta Dirección</a>
+          <a href="#" id="consulta_manzana" class="dropdown-item" onclick="mostrar(id)">Consulta Manzana</a>
+          <a href="#" id="consulta_sitio" class="dropdown-item" onclick="mostrar(id)">Consulta Sitio</a>
+          <a href="#" id="consulta_codigo" class="dropdown-item" onclick="mostrar(id)">Consulta Código Catastral</a> 
+          <a href="#" id="consulta_matricula" class="dropdown-item" onclick="mostrar(id)">Consulta Matrícula inmobiliaria</a> 
+          <a href="#" id="consulta_propietario" class="dropdown-item" onclick="mostrar(id)">Consulta Nombre de Propietario</a>
+          <a href="#" id="consulta_id_propietario" class="dropdown-item" onclick="mostrar(id)">Consulta Documento de Propietario</a>-->
+        </div>
+
+        <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <!--<h6 class="modal-title w-100 text-center" id="titulotabla">Consultas avanzadas</h6>-->
+                <h6 class="modal-title w-100 text-center roboto-regular" id="exampleModalLabel">Consultas avanzadas</h3>
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"style="margin-top: 2px; color: white;" onclick="cerrarSQL()">&times;</button>-->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div id="query-builder"></div>
+                <div class="container" style="font-size: 13px;">
+                  <div class="control-group">
+                    <label class="control-label" for="esquema" >Seleccione el Esquema a consultar: </label>
+                    <div class="col-md-12">
+                    <select id="esquema" class="form-select" onchange="datosesq()">
+                      <option selected >Seleccione...</option>
+                      <option value="vias">Inventario vial</option>
+                      <option value="pot_casanare">POT</option>
+                      <option value="cartografia_basica">Cartografía basíca</option>
+                    </select>
+                  </div>
+              
+                  <div class="row align-items-start">
+                    <label class="control-label" for="tablasbase" id="labeltablasbase" style="display: none;">Seleccione la tabla a consultar: </label>
+                    <div class="col-md-12">
+                      <select id="tablasbase" class="form-control" style="display: none;" onchange="datostab()"></select>
+                    </div>
+                  </div>
+                              
+                  <div class="row align-items-start">
+                    <label class="control-label" for="datostablasbase" id="labeldatostablasbase" style="display: none;">Seleccione una columna de la tabla: </label>
+                    <div class="col-md-12">
+                      <select id="datostablasbase" class="form-control" style="display: none;" onchange="datostabatrib()"></select>
+                    </div>
+                  </div>
+                
+                  <div class="row align-items-start">
+                    <div class="col-md-12">
+                      <select id="tablasbaseatributos" class="form-control" style="display: none; font-size: 13px;" size="3" onchange="expresionsql()"></select>
+                    </div>
+                  </div>
+
+                  <form name="calculator" class="form-horizontal" id="calculator" style="display: none; max-width: 400px; padding-left: 20px;">
+                    <div class="btn-grid">
+                      <input type="button" class="btn btn-outline-secondary" value="=" onClick="datosoperador(' = ')">
+                      <input type="button" class="btn btn-outline-secondary" value="<> " onClick="datosoperador(' <> ')">
+                      <input type="button" class="btn btn-outline-secondary" value="Like" onClick="datosoperador(' Like ')">
+                      <input type="button" class="btn btn-outline-secondary" value=">" onClick="datosoperador(' > ')">
+                      <input type="button" class="btn btn-outline-secondary" value=">=" onClick="datosoperador(' >= ')">
+                      <input type="button" class="btn btn-outline-secondary" value="And" onClick="datosoperador(' And ')">
+                      <input type="button" class="btn btn-outline-secondary" value="<" onClick="datosoperador(' < ')">
+                      <input type="button" class="btn btn-outline-secondary" value="<=" onClick="datosoperador(' <= ')">
+                      <input type="button" class="btn btn-outline-secondary" value="Or" onClick="datosoperador(' Or ')">
+                      <input type="button" class="btn btn-outline-secondary" value="ilike" onClick="datosoperador(' Ilike ')">
+                      <input type="button" class="btn btn-outline-secondary" value="(" onClick="datosoperador(' ( ')">
+                      <input type="button" class="btn btn-outline-secondary" value=")" onClick="datosoperador(' ) ')">
+                      <input type="button" class="btn btn-outline-secondary" value="Not" onClick="datosoperador(' Not ')">
+                      <input type="button" class="btn btn-outline-secondary" value="Is" onClick="datosoperador(' Is ')">
+                      <input type="button" class="btn btn-outline-secondary" value="In" onClick="datosoperador(' In ')">
+                      <input type="button" class="btn btn-outline-secondary" value="Null" onClick="datosoperador(' Null ')">
+                    </div>
+                  </form>
+                                  
+                  <label for="fname" class="control-label">Expresión SQL:</label>
+                  <input type="text" class="form-control" id="fname" name="fname">
+              
+                  <div class="modal-footer">
+                    <button class="shepherd-button shepherd-button-siguiente" onclick="aplicarFilter()">Ejecutar Consulta&nbsp;<i class="fa fa-filter"></i></button>
+                  </div>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body" id="feature-info"></div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+
+        <div class="modal fade" id="cargarservicios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+              <form class="form-horizontal" method="post" action="">
+                <div class="modal-header">
+                  <h3 class="modal-title" id="exampleModalLabel">Cargar Información Externa</h3>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                  <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active" id="home-tab2" data-bs-toggle="tab" data-bs-target="#home-shape" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Cargar SHP</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link" id="profile-tab2" data-bs-toggle="tab" data-bs-target="#home-wms" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Cargar WMS</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent2">
+                    <div class="tab-pane fade show active" id="home-shape" role="tabpanel" aria-labelledby="home-tab2" tabindex="0">
+                      <h3>Seleccionar Shape File</h3>
+                      <p>Comprima en formato .ZIP la capa que quiere cargar y seleccionela a continuación:</p>
+                      <div id="menu1shp" class="sixteen wide column center aligned" style="position: absolute; bottom:15%; left: 40%;"></div>
+                      <div id="shp">
+                        <div class="ui page grid">
+                          <div class="sixteen wide aligned column">
+                            <div class="ui form segment">
+                              <div class="field">
+                                <div class="ui teal fluid labeled icon button upload" id="zipfile" data-content="Archivo : SHP" data-variation="inverted large">Cargar Shape file .zip
+                                  <i class="fa fa-upload"></i>
+                                  <input type="file" id="file" accept=".zip">
+                                </div>
+                              </div>
+                              <div class="field" id="dataInfo"></div>
+                              <div id="option">
+                                <div class="field ui labeled input" id="epsgField">
+                                  <div class="ui label">EPSG</div>
+                                  <input type="text" placeholder="Reproyección : 4326" id="epsg" class="v" onfocus="this.value='';">
+                                </div>
+                                <div class="field ui labeled input">
+                                  <div class="ui label">Encoding</div>
+                                  <input type="text" placeholder="Codificación deseada UTF-8, Big5, Big5-HKSCS ... " id="encoding" class="v" onfocus="this.value='';">
+                                </div>
+                              </div>
+                              <div class="two fields">
+                                <div class="field" style="width: 100%;">
+                                  <div class="ui teal fluid labeled icon disabled button" data-backdrop="false" data-dismiss="modal" id="preview">Cargar Shape File en el mapa<i class="add icon"></i>
+                                  </div>
+                                </div>
+                                <div id="removeLayer" onclick="removerly()" class="negative large ui button" style="font-size: 14px; width: 100%;">Remover Las Capas Cargadas</div>
+                              </div>
+                            </div>
+                            <div class="ui inverted dimmer">
+                              <div class="ui large text loader">Loading</div>
+                            </div>
+                          </div>
+                          <div class="ui small modal">
+                            <i class="close icon"></i>
+                            <div class="header">Error Messages</div>
+                            <div class="content">
+                              <div class="image"><i class="file archive outline icon"></i></div>
+                              <div class="description">
+                                <p>Lo sentimos, este formato no es soportado.</p>
+                              </div>
+                            </div>
+                            <div class="actions">
+                              <div class="ui red button">
+                                <i class="remove icon"></i>Cancel
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+                    <div class="tab-pane fade" id="home-wms" role="tabpanel" aria-labelledby="profile-tab2" tabindex="0">
+                      <h3>Cargar Web Map Service</h3>
+                      <p>&nbsp;&nbsp;Introduzca enlace al servicio WMS a cargar:</p>
+                      <div class="row" style="margin-left: 2em; margin-bottom: 1em;">
+                        <div class="col-lg-10">
+                          <div class="input-group">
+                            <input type="text" class="form-control" id="urlservice"
+                              placeholder="https://data.geopf.fr/wms-r/wms?">
+                            <span class="input-group-btn" style="background-color: #5BC0DE; ">
+                              <button class="btn btn-secondary" id="botonwms" onclick="wmsload()" type="button">Buscar</button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div id="listawms" style="display: none;">
+                        <p>&nbsp;&nbsp;Seleccione la capa:</p>
+                        <select name="nombresserv" id="nombresserv"
+                          style="width: 20em; height: auto; margin-top: 0em; margin-left: 3em; margin-bottom: 2em;"></select>
+                        <button type="button" class="btn btn-primary" style="padding-left: 1em; padding-right: 1em;" onclick="loadwms()">Añadir Capa</button>
+                        <div id="removeWMS" class="negative large ui button" style="font-size: 14px; width: 100%;" onclick="removewms()">Remover WMS</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        
+    <script>
+      $('.modal-dialog').draggable({
+            handle:".modal-header"
+          });
+          $('.add-one').click(function(){
+          $('.dynamic-element').first().clone().appendTo('.dynamic-stuff').show();
+          attach_delete();
+      });
+      
+      //Attach functionality to delete buttons
+      function attach_delete(){
+        $('.delete').off();
+        $('.delete').click(function(){
+          console.log("click");
+          $(this).closest('.form-group').remove();
+        });
+      }
+      $(window).trigger('resize');
+
+      $('[data-toggle="tooltip"]').tooltip({
+          trigger : 'hover'
+      }); 
+    </script>
+    <script src="src/app/index_evt/index_evt.js"></script>
+    <script src="src/app/Consultas/consultas_simples.js"></script>
+    <script src="src/app/app.js"></script>
+    <script src="src/app/querys.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="https://cdn.sencha.com/ext/gpl/5.1.0/build/ext-all-debug.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.4/xlsx.core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/alasql/0.1/alasql.min.js"></script>
+    <script src="assets/vendor/jQuery-QueryBuilder/query-builder.standalone.min.js"></script>
+    <script src="assets/vendor/tableExport/tableExport.min.js"></script>
+    <script src="assets/vendor/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+    <script src="assets/vendor/tableExport/libs/html2canvas/html2canvas.min.js"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+    <script src="sidebars/sidebars.js"></script>       
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>  
+    <!--<script src="../src/highcharts/js/highcharts.js"></script>
+    <script src="../src/highcharts/js/exporting.js"></script>-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="src/estadisticas.js"></script>
+    <script src="src/spherejs/shepherd.min.js"></script>
+    <!--<script src="//code.tidio.co/9hfxzg0i7erkzytrtzpswxflbu0su4oo.js" async></script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQb7uqeH9Diof2c7zDfMj-lFIeVajnLUw&libraries=places"></script>
+    <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/66180e681ec1082f04e155fa/1hr6vgi15';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+  <!--End of Tawk.to Script-->
+
+    <script type="text/javascript">
+      window._mfq = window._mfq || [];
+      (function() {
+        var mf = document.createElement("script");
+        mf.type = "text/javascript"; mf.defer = true;
+        mf.src = "//cdn.mouseflow.com/projects/e94c14ec-1b50-4748-8d72-3c6445ea3c50.js";
+        document.getElementsByTagName("head")[0].appendChild(mf);
+      })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <script src="src/jquery/jquery.min.js"></script>
+        <script src="sql/jsSearch.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.8.10/themes/smoothness/jquery-ui.css" type="text/css">
+        <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js"></script>
+    </head>
+    <body>
+        <script>
+            window.onload = function () {
+                var ca = document.cookie.split('=');
+                var select = search("wfs:ValidateUser", ca[0], ca[1]);
+                //alert(select);
+                if (select === null || select.length == 0) {
+                    select = search("wfs:ValidateUser", ca[0], ca[1], 't');
+                    if (select === null || select.length === 0) {
+                        location.href = "index.html?ig=error";
+                    }
+                } else if (select.length==1){
+                    var f = new Date();
+                    if ((f.getMonth() + 1) < 10) {
+                        var month = '0' + (f.getMonth() + 1);
+                    } else {
+                        var month = (f.getMonth() + 1);
+                    }
+                    if (f.getDate() < 10) {
+                        var day = '0' + f.getDate();
+                    } else {
+                        var day = f.getDate();
+                    }
+                    var hour = f.getHours();
+                    if (f.getMinutes() < 10) {
+                        var minute = '0' + f.getMinutes();
+                    } else {
+                        var minute = f.getMinutes();
+                    }
+                    if (f.getSeconds() < 10) {
+                        var second = '0' + f.getSeconds();
+                    } else {
+                        var second = f.getSeconds();
+                    }
+                    var fecha = f.getFullYear() + "-" + month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";
+                    //console.log(select);
+                    //alert(ca[0], fecha);
+                    //var payload= '<Transaction xmlns="http://www.opengis.net/wfs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:chia="chia" xmlns:gml="http://www.opengis.net/gml" version="1.1.0" service="WFS" xsi:schemaLocation="http://35.194.38.28:8080/geoserver"><Insert xmlns="http://www.opengis.net/wfs"><wfs:reguser><usuario>'+ca[0]+'</usuario><actividad>'+'ingreso'+'</actividad><fecha>'+fecha+'</fecha></wfs:reguser></Insert></Transaction>';
+                    var payload= '<Transaction xmlns="http://www.opengis.net/wfs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wfsr="wfsr" xmlns:gml="http://www.opengis.net/gml" version="1.1.0" service="WFS" xsi:schemaLocation="https://www.geomonsas.xyz:8443/geoserver"><Insert xmlns="http://www.opengis.net/wfs"><wfsr:reguser><usuario>'+ca[0]+'</usuario><actividad>ingreso</actividad><fecha>'+fecha+'</fecha></wfsr:reguser></Insert></Transaction>';
+                    $.ajax({
+                            url:'https://www.geomonsas.xyz:8443/geoserver/wfs',
+                            type: 'POST',
+                            dataType: 'xml',
+                            processData: false,
+                            contentType: 'text/xml',
+                            data: payload,
+                            success: function (xml) {
+                                if (select[0][7] === "Administrador"){
+                                    location.href = "admin.html";
+                                }else{
+                                    location.href = "./visor/visor.html";
+                                }
+                                },
+                                    error: function (xml) {
+                                            console.log('error');
+                                }
+                            }).done(function() {
+                    });
+                }
+            };
+
+        </script>
+    </body>
+</html>

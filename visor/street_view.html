@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Street View side-by-side</title>
+        <style>
+            html, body {
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            /*#map{
+                float: left;
+                height: 50%;
+                width: 100%;
+                /*z-index: 0;
+            }*/
+            #pano {
+                float: left;
+                height: 100%;
+                width: 100%;
+                /*z-index: 0;*/
+            }
+
+            #cerrar{
+                position: absolute;
+                top:10px;
+                right:30px;
+                height: 57%;
+                width: 50%;
+                z-index: 10;
+            }
+            img{
+                height: 970px;
+                width: 572px;
+            }
+        </style>
+        <script src="src/app/index_evt/index_evt.js"></script>
+        <script src="src/app/geocodificacion.js"></script>
+    </head>
+    <body>
+        <div id="pano"></div>
+        <div id="map"></div>
+        <script>
+            //funcion para capturar paramtros url
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                        results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+            var coordenadas = getParameterByName('coordenadas');
+            var ccc = coordenadas.split(",", 2);
+            try {
+                eval("function initialize(){var fenway={lat:" + ccc[0] + ",lng:" + ccc[1] + "};panorama=new google.maps.StreetViewPanorama(document.getElementById('pano'),{position:fenway,pov:{heading:34,pitch:10},linksControl:false});panorama.addListener('position_changed',function(){window.parent.mapposi(panorama.getPosition(),panorama.getPov().heading);});panorama.addListener('pov_changed',function (){window.parent.mapposi(panorama.getPosition(),panorama.getPov().heading);});}");
+                //panorama.addListener('position_changed', function() {alert("w"); var positionCell = document.getElementById('cerrar');positionCell.firstChild.nodeValue = panorama.getPosition() + '';});
+            } catch (err) {
+            }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQb7uqeH9Diof2c7zDfMj-lFIeVajnLUw&signed_in=true&callback=initialize">
+        </script>
+    </body>
+</html>

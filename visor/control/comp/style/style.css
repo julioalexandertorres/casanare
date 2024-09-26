@@ -1,0 +1,508 @@
+.tools {
+      text-align: center;
+      display: inline-block;
+      width: 2.5em;
+      height: 500px;
+      background: #FFFFFF;
+      position: absolute;
+      top:0em;
+      right: 0px;
+      z-index: 20;
+      height: 100%;
+    }
+    .tools i {
+      font-size: 2em;
+      cursor: pointer;
+      display: inline-block;
+    }
+    /*#compare {
+      position: relative;
+      float: left;
+      height: 500px;;
+      width: calc(100% - 2.5em);
+    }*/
+    #compare {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    .fullscreen .tools {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 6em 0;
+      touch-action: none;
+    }
+    .fullscreen #compare {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      height: auto;
+    }
+    /* Place map2 over map1 */
+    #map,
+    #map2 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+    /* Map 1 */
+    #compare.view1 #map2 {
+      display: none;
+    }
+    #compare.view2 #map {
+      display: none;
+    }
+    /* Remove controls on map 1 */
+    #compare.swipev #map .ol-control,
+    #compare.swipeh #map .ol-control,
+    #compare.clip #map .ol-control {
+      display: none;
+    }
+    /* Remove cross on swipe */
+    #compare.swipev .ol-target-overlay,
+    #compare.swipeh .ol-target-overlay {
+      display: none;
+    }
+    /* Compare 50% */
+    .compare #map {
+      width: 50%;
+    }
+    .compare #map2 {
+      left: 50%;
+      width: 50%;
+    }
+    /* popup style */
+    .ol-popup {
+      max-width:300px;
+      min-width:100px;
+      min-height:1em;
+      z-index: 1;
+    }
+    /* Image on popup */
+    .ol-popup img {
+      float: left;
+      margin: 0 0.5em 0 0;
+      max-width: 100px;
+      max-height: 100px;
+    }
+
+    /* github corner */
+a.icss-github-corner,
+a.icss-github-corner-left {
+  font-size: 2.5em;
+  position: fixed;
+  top:0;
+  right: 0;
+  z-index: 1000;
+  color: #fff;
+  background-color: #333;
+  padding: .5em 2em 0;
+  text-align: center;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  -webkit-transform-origin: 3.9em 3em;
+      -ms-transform-origin: 3.9em 3em;
+          transform-origin: 3.9em 3em;
+  overflow: hidden;
+}
+a.icss-github-corner-left {
+  left: 0;
+  right: auto;
+  -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  -webkit-transform-origin: 1em 3.1em;
+      -ms-transform-origin: 1em 3.1em;
+          transform-origin: 1em 3.1em;
+}
+a.icss-github-corner:hover i,
+a.icss-github-corner-left:hover i{
+  -webkit-animation: vertical 2s ease;
+          animation: vertical 2s ease;
+}
+
+a.icss-github-corner i,
+a.icss-github-corner-left i,
+i.icss-github-corner {
+  color: #fff;
+  position: relative;
+  display:inline-block;
+  font-style: normal;
+  background-color:currentColor;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  vertical-align: middle;
+  width: .8em;
+  height: .6em;
+  -webkit-border-radius: 45% 45% 45% 45% / 50%;
+          border-radius: 45% 45% 45% 45% / 50%;
+  background-color: currentColor;
+  -webkit-box-shadow: 0 .35em 0 -.2em, 
+      0 .38em 0 -.2em,
+      0 .41em 0 -.2em,
+      0 .44em 0 -.2em,
+      0 .47em 0 -.2em;
+          box-shadow: 0 .35em 0 -.2em, 
+      0 .38em 0 -.2em,
+      0 .41em 0 -.2em,
+      0 .44em 0 -.2em,
+      0 .47em 0 -.2em;
+  margin: .12em .1em .23em;
+}
+a.icss-github-corner i:before,
+a.icss-github-corner-left i:before,
+i.icss-github-corner:before {
+  content: "";
+  border-width: 0; 
+  position: absolute;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-width: .15em .15em;
+  border-style: solid;
+  -webkit-border-radius: 0.02em 60% 100% 80%;
+          border-radius: 0.02em 60% 100% 80%;
+  left: 0;
+  top: -.07em;
+  -webkit-transform: rotate(20deg);
+      -ms-transform: rotate(20deg);
+          transform: rotate(20deg);
+}
+a.icss-github-corner i:after,
+a.icss-github-corner-left i:after,
+i.icss-github-corner:after {
+  content: "";
+  border-width: 0; 
+  position: absolute;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-width: .15em .15em;
+  border-style: solid;
+  -webkit-border-radius: 0.02em 80% 100% 60%;
+          border-radius: 0.02em 80% 100% 60%;
+  left: .5em;
+  top: -.07em;
+  -webkit-transform: rotate(65deg);
+      -ms-transform: rotate(65deg);
+          transform: rotate(65deg);
+}
+@-webkit-keyframes vertical {
+	0%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	4%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	8%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	12%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	16%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	20%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	22%,100%{-webkit-transform:translate(0,0);transform:translate(0,0)}
+}
+@keyframes vertical {
+	0%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	4%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	8%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	12%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	16%{-webkit-transform:translate(0,-3px);transform:translate(0,-3px)}
+	20%{-webkit-transform:translate(0,3px);transform:translate(0,3px)}
+	22%,100%{-webkit-transform:translate(0,0);transform:translate(0,0)}
+}
+/**/
+body {
+  font-family: 'Lucida Grande',Verdana,Geneva,Lucida,Arial,Helvetica,sans-serif;
+	font-size: 16px;
+}
+a, i, b {
+  color: #036AB5;
+	text-decoration: none;
+}
+button i {
+  color: #fff;
+}
+.ol-control button i,
+.ol-control.ol-bar .ol-control button i {
+  color: inherit;
+}
+a:hover {
+  text-decoration: underline;
+}
+a.title {
+  text-decoration: none;
+}
+h1 {
+  background: #333 url(https://openlayers.org/theme/img/logo-dark.svg) no-repeat scroll .3em center;
+  color: #fff;
+  font-size: 1.5em;
+  padding: .5em 0 .5em 2.1em;
+  margin: 0;
+  background-size: 1.5em;
+  text-decoration: none!important;
+}
+a:hover h1 {
+  color: #0af;
+}
+h2 {
+  color: #337ab7;
+	font-size:1.1em;
+	margin: 0.5em 0;
+}
+
+.info {
+  background:#f5f5f5;
+	padding:0.5em;
+	margin: 1em 0;
+}
+.info ul {
+  margin:0;
+}
+
+#map {
+  float:left;
+	margin-right:1em;
+  background:#ddd;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#map button {
+  outline: none;
+}
+
+.ol-attribution img {
+  vertical-align:middle;
+}
+
+.layerSwitcher {
+  display:inline-block;
+	background:#cdf;
+	padding:0.5em;
+}
+.btn {
+  color:#fff;
+	background:#369;
+	padding:0.5em;
+	text-decoration:none;
+	cursor:pointer;
+	display:inline-block;
+	margin: .5em .5em 0 0;
+}
+
+.block,
+.options {
+  display: table;
+	margin: 0.5em;
+	position: relative;
+	z-index: 1;
+	margin:1em;
+}
+.options {
+  background: #def;
+	padding: 0.5em;
+}
+.options ul {
+  list-style: none;
+	padding-left: 0.5em;
+}
+
+i[class*="icss-"] {
+  position: relative;
+  display:inline-block;
+  font-style: normal;
+  background-color:currentColor;
+  box-sizing: border-box;
+  vertical-align: middle;
+  font-size: 1.5em;
+}
+i[class*="icss-"]:before, 
+i[class*="icss-"]:after {
+  content: "";
+  border-width: 0; 
+  position: absolute;
+}
+i.icss-book {
+  width:1em;
+  height:.8em;
+  background-color: transparent; 
+  margin: 0 .03em .08em 0;
+}
+i.icss-book:before {
+  height: .8em;
+  width: 0.7em;
+  box-shadow: inset 0 0 0 0.15em, 
+      inset 0 -.48em,
+      .07em .07em;
+  border: 0.07em solid transparent;
+  border-width: 0 0.07em .07em 0;
+  border-radius: .05em .15em .1em .1em / .05em .05em .1em .05em;
+  transform: skewX(-20deg);
+  left: 0.15em;
+}
+i.icss-book:after {
+  width: .2em;
+  height: .2em;
+  background-color: transparent;
+  border: 0.05em solid currentColor;
+  border-color: currentColor transparent transparent currentColor;
+  border-radius: 50%;
+  transform: rotate(-45deg);
+  top: 0.67em;
+  left: .018em;
+  box-shadow: .13em -.15em 0 -.05em,
+      .51em -.33em 0 -.05em;
+}
+.experimental {
+  color:#fff; 
+  background: #f91; 
+  padding:.2em .5em;
+  display: inline-block;
+  -webkit-transform: rotate(-5deg);
+  transform: rotate(-5deg);
+  margin: -1em 0;
+}
+
+.ol-attribution ul {
+  font-size: .8em;
+}
+
+.select {
+    left: 6em;
+    width: fit-content;
+    cursor: pointer;
+    position: relative;
+    transition: 300ms;
+    color: white;
+    overflow: hidden;
+  }
+  
+  .selected {
+    background-color: #025490;
+    padding: 5px;
+    margin-bottom: 3px;
+    border-radius: 5px;
+    position: relative;
+    z-index: 100000;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .arrow {
+    position: relative;
+    right: 0px;
+    height: 10px;
+    transform: rotate(-90deg);
+    width: 25px;
+    fill: white;
+    z-index: 100000;
+    transition: 300ms;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #025490;
+    position: relative;
+    top: -100px;
+    opacity: 0;
+    transition: 300ms;
+  }
+  
+  .select:hover > .options {
+    opacity: 1;
+    top: 0;
+  }
+  
+  .select:hover > .selected .arrow {
+    transform: rotate(0deg);
+  }
+  
+  .option {
+    border-radius: 5px;
+    padding: 3px;
+    transition: 300ms;
+    background-color: #025490;
+    width: 150px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .option:hover {
+    background-color: #036AB5;
+  }
+  
+  .options input[type="radio"] {
+    display: none;
+  }
+  
+  .options label {
+    display: inline-block;
+  }
+  .options label::before {
+    content: attr(data-txt);
+  }
+  
+  .options input[type="radio"]:checked + label {
+    display: none;
+  }
+  
+  .options input[type="radio"]#all:checked + label {
+    display: none;
+  }
+  
+  .select:has(.options input[type="radio"]#all:checked) .selected::before {
+    content: attr(data-default);
+  }
+  .select:has(.options input[type="radio"]#option-1:checked) .selected::before {
+    content: attr(data-one);
+  }
+  .select:has(.options input[type="radio"]#option-2:checked) .selected::before {
+    content: attr(data-two);
+  }
+  .select:has(.options input[type="radio"]#option-3:checked) .selected::before {
+    content: attr(data-three);
+  }
+  .select:has(.options input[type="radio"]#option-4:checked) .selected::before {
+    content: attr(data-four);
+  }
+  .select:has(.options input[type="radio"]#option-5:checked) .selected::before {
+    content: attr(data-five);
+  }
+  .select:has(.options input[type="radio"]#option-6:checked) .selected::before {
+    content: attr(data-six);
+  }
+  .select:has(.options input[type="radio"]#option-7:checked) .selected::before {
+    content: attr(data-seven);
+  }
+  .select:has(.options input[type="radio"]#option-8:checked) .selected::before {
+    content: attr(data-eight);
+  }
+  .select:has(.options input[type="radio"]#option-9:checked) .selected::before {
+    content: attr(data-nine);
+  }
+  .select:has(.options input[type="radio"]#option-10:checked) .selected::before {
+    content: attr(data-ten);
+  }
+  .select:has(.options input[type="radio"]#option-11:checked) .selected::before {
+    content: attr(data-eleven);
+  }
+  .select:has(.options input[type="radio"]#option-12:checked) .selected::before {
+    content: attr(data-twelve);
+  }
+  .select:has(.options input[type="radio"]#option-13:checked) .selected::before {
+    content: attr(data-thirteen);
+  }
+  .select:has(.options input[type="radio"]#option-14:checked) .selected::before {
+    content: attr(data-fourteen);
+  }
+  .select:has(.options input[type="radio"]#option-15:checked) .selected::before {
+    content: attr(data-fiveteen);
+  }
+  .select:has(.options input[type="radio"]#option-16:checked) .selected::before {
+    content: attr(data-sixteen);
+  }

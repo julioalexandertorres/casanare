@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>  
+        <meta charset="UTF-8">
+        <title>Gobernacion de Casanare</title>
+        <link rel="icon" type="image/png" href="imagenes/escudo.ico"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/login.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+        
+    <img class="amarillo" id="fotoinicio" src= "imagenes/img_login.jpg" width="100%"/>
+    <p style="position: absolute; bottom: 2em; right: 2em; color:white; z-index: 100; font-size: 9px;">Toma aérea de Yopal, capital de Casanare en Colombia | Tomado de www.diariodecasanare.com.</p>    
+</head>
+<!--<body onload="onload()">-->
+   <body>
+    <div class="modal fade" id="recovery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form class="form-horizontal" method="post" action="" onsubmit="resetpass()">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Recuperar Contraseña</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="control-group">
+                            <label class="control-label">Ingrese su correo electronico</label>
+                            <div class="controls">
+                                <input class="form-control" type="email" id="email" required="required">                          
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="save">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="login">
+        <div class="login-form login-screen__main-view">
+            <div class="login-page-logo">
+                <div class="login-page-logo__service-title">
+                   <img src= "imagenes/logo_casanare.png" width="100%" >
+                </div>
+            </div>
+        
+        <!--<form method="post" action="validacion.html" class="login-form__form">-->
+        <form method="post" action="">
+            <div>
+                <div class="v-input v-text-field theme--light">
+                    <div class="v-input__prepend-outer">
+                        <div class="v-input__icon v-input__icon--prepend">
+                          <i aria-hidden="true"  class="fa fa-user" style="color:#9E9E9E"></i>
+                        </div>
+                    </div>
+
+                    <div class="v-input__control">
+                        <div class="v-input__slot">
+                            <input type="text" id="u" name="u" style="font-size: 14px;" placeholder="Nombre de usuario" required="required" autocomplete="username"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="v-text-field__details">
+                    <div class="v-messages theme--light">
+                        <div class="v-messages__wrapper"></div>
+                    </div>
+                </div>
+                <!--</div>-->
+                <div class="v-input v-text-field theme--light">
+                    <div class="v-input__prepend-outer">
+                        <div class="v-input__icon v-input__icon--prepend">
+                        <i aria-hidden="true"  class="fa fa-lock" style="color:#9E9E9E"></i>
+                        </div>
+                    </div>
+                <div class="v-input__control">
+                    <div class="v-input__slot">
+                        <input type="password" id="p" name="p" style="font-size: 14px;" placeholder="Contraseña" required="required" autocomplete="current-password"/>
+                        <div class="v-input__append-inner">
+                            <div class="v-input__icon v-input__icon--append">
+                                <i aria-hidden="true"  class="fa fa-eye" style="color:#9E9E9E; cursor: pointer;" onclick="mostrarContrasena()"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="olvidocontraseña" data-toggle="modal" data-target="#recovery">¿Olvidó su contraseña?</a>
+                    
+                    <!--<button type="submit" id="b" class="v-btn theme--light primary login-form__login-btn" onclick="setCookie()"><div class="v-v-btn__content">INGRESAR</div></button>-->
+                    <button type="submit" id="b" class="v-btn theme--light primary login-form__login-btn" onclick="login()"><div class="v-v-btn__content">INGRESAR</div></button>
+                    <br><h2 id="er" class="error">Credenciales no válidas</h2>
+                    <!--<h2 id="er1" class="error">Por favor ingrese desde Google Chrome</h2>-->
+                </div>
+            </div>
+        </form>     
+     </div>
+    </div>
+    <script>
+        function mostrarContrasena(){
+            var tipo = document.getElementById("p");
+            if(tipo.type == "password"){
+                tipo.type = "text";
+            }else{
+                tipo.type = "password";
+            }
+        }
+    </script> 
+    <script src="visor/src/sweetalert/sweetalert.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/prefixfree.min.js"></script>
+    <script src="sql/jsSearch.js"></script>
+    <script src="visor/sql/js_sql.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="principal/load.js"></script>
+    <script src="js/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

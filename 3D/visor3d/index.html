@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8" />
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <title>Visor 3D</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css"> 
+    <link href="https://unpkg.com/tabulator-tables@4.9.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="CesiumViewer.css" media="screen" />
+    <link rel="stylesheet" href="css/photo_sphere.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <script src="CesiumViewer.js" type="module"></script>
+    <script src="https://kit.fontawesome.com/4cf6deb8db.js" crossorigin="anonymous"></script> 
+    <script src="sql/js_sql.js"></script>
+    <script src="sql/jsSearch.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="src/app/index_evt/index_evt.js"></script>
+    <script src="src/sweetalert/sweetalert.js"></script>
+    <script src="src/psv/three.min.js"></script>
+	  <script src="src/psv/polyfill.min.js"></script>
+	  <script src="src/psv/doT.min.js"></script>
+	  <script src="src/psv/uevent.min.js"></script>
+		<script src="src/psv/photo-sphere-viewer.min.js"></script> 
+  </head>
+  <body onload="pageL()">
+    <div id="carga2" class="loaderp">
+      <span></span>
+    </div>
+    <div id="cesiumContainer" class="fullWindow"></div>
+    <!--<div id="loadingIndicator" class="loadingIndicator"></div>-->
+    
+    <div id="herramientas" class='container'>
+    <div id="toolbar" class="tree" style="box-shadow: 0px 1px 8px 1px; display: none;">
+
+    <!--<div id="measureContainer"></div>--> 
+    <table id="layersbasecatastral" class='tableDataset' style="display: none;">
+      <tbody data-bind="foreach: layers1">
+          <div class="roboto-bold" style="background-color:#FFA500; padding-top:9px; padding-bottom:9px; padding-left:35%; color:#FFFFFF; font-size:13px;">CONTROL DE CAPAS</div>
+          <div class="roboto-medium" onclick="mostrarbasecatastral(this)" style="border-radius: 5px; margin: 6px; background-color:#f2f2f2; padding-top:10px; padding-bottom:0px; cursor: pointer;"><i id="faPlus" class="fa fa-folder fa-lg folder"></i>INVENTARIO VIAL</div> 
+          <tr style="padding: 2em;">
+              <td>
+                <input data-bind="checked: show" type="checkbox">
+              </td>
+              <td>
+                <span data-bind="text: name, visible: !$parent.isSelectableLayer($data)"></span>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2">
+                  <input min="0" max="1" step="0.01" data-bind="value: alpha, valueUpdate: 'input'" type="range" class="PB-range-slider"><span style="padding-left: 15px; cursor: pointer;" data-bind="click: function() { viewlegend(name); }"><a class='fa fa-image fa-lg buttonDisable'></a></span>
+              </td>
+          </tr>
+      </tbody>
+    </table>
+
+    <table id="layerspgirs" class='tableDataset' style="display: none;">
+      <tbody data-bind="foreach: layers2">
+      <div class="roboto-medium" onclick="mostrarbasepgirs(this)" style="border-radius: 5px; margin: 6px; background-color:#f2f2f2; padding-top:10px; padding-bottom:0px; cursor: pointer;"><i id="faPlus" class="fa fa-folder fa-lg folder"></i>CAPAS POT</div> 
+      <tr data-bind="css: { up: $parent.upLayer === $data, down: $parent.downLayer === $data }">
+          <td><input data-bind="checked: show" type="checkbox"></td>
+          <td>
+              <span data-bind="text: name, visible: !$parent.isSelectableLayer($data)"></span>
+          </td>
+      </tr>
+      <tr>
+          <td colspan="2">
+              <input min="0" max="1" step="0.01" data-bind="value: alpha, valueUpdate: 'input'" type="range" class="PB-range-slider"><span style="padding-left: 15px; cursor: pointer;" data-bind="click: function() { viewlegend(name); }"><a class='fa fa-image fa-lg buttonDisable'></a></span>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table id="layersbaseriesgo" class='tableDataset' style="display: none;">
+      <tbody data-bind="foreach: layers3">
+      <div class="roboto-medium" onclick="mostrarbaseriesgo(this)" style="border-radius: 5px; margin: 6px; background-color:#f2f2f2; padding-top:10px; padding-bottom:0px; cursor: pointer;"><i id="faPlus" class="fa fa-folder fa-lg folder"></i>CARTOGRAFÍA BÁSICA</div> 
+      <tr data-bind="css: { up: $parent.upLayer === $data, down: $parent.downLayer === $data }">
+          <td><input data-bind="checked: show" type="checkbox"></td>
+          <td>
+              <span data-bind="text: name, visible: !$parent.isSelectableLayer($data)"></span>
+          </td>
+      </tr>
+      <tr>
+          <td colspan="2">
+              <input min="0" max="1" step="0.01" data-bind="value: alpha, valueUpdate: 'input'" type="range" class="PB-range-slider"><span style="padding-left: 15px; cursor: pointer;" data-bind="click: function() { viewlegend(name); }"><a class='fa fa-image fa-lg buttonDisable'></a></span>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table id="layersdane" class='tableDataset' style="display: none;"><tbody data-bind="foreach: layers4">
+      <div class="roboto-medium" onclick="mostrarbasedane(this)" style="border-radius: 5px; margin: 6px; background-color:#f2f2f2; padding-top:10px; padding-bottom:0px; cursor: pointer;"><i id="faPlus" class="fa fa-folder fa-lg folder"></i>MODELOS DIGITALES DE TERRENO</div> 
+      <tr data-bind="css: { up: $parent.upLayer === $data, down: $parent.downLayer === $data }">
+          <td><input data-bind="checked: show" type="checkbox"></td>
+          <td>
+              <span data-bind="text: name, visible: !$parent.isSelectableLayer($data)"></span>
+          </td>
+      </tr>
+      <tr>
+          <td colspan="2">
+              <input min="0" max="1" step="0.01" data-bind="value: alpha, valueUpdate: 'input'" type="range" class="PB-range-slider"><span style="padding-left: 15px; cursor: pointer;" data-bind="click: function() { viewlegend(name); }"><a class='fa fa-image fa-lg buttonDisable'></a></span>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table id="capasbase" class='tableDataset' style="display: none;">
+      <tbody data-bind="foreach: layers8">
+      <div class="roboto-medium" onclick="mostrarcapasbase(this)" style="border-radius: 5px; margin: 6px; background-color:#f2f2f2; padding-top:10px; padding-bottom:0px; cursor: pointer;"><i id="faPlus" class="fa fa-folder fa-lg folder"></i>CAPAS BASE</div> 
+      <tr data-bind="css: { up: $parent.upLayer === $data, down: $parent.downLayer === $data }">
+          <td><input data-bind="checked: show" type="checkbox"></td>
+          <td>
+              <span data-bind="text: name, visible: !$parent.isSelectableLayer($data)"></span>
+          </td>
+      </tr>
+      <tr>
+          <td colspan="2">
+              <input min="0" max="1" step="0.01" data-bind="value: alpha, valueUpdate: 'input'" type="range" class="PB-range-slider"><span style="padding-left: 15px; cursor: pointer;" data-bind="click: function() { viewlegend(name); }"><a class='fa fa-image fa-lg buttonDisable'></a></span>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>  
+  </div>
+
+  <div class="btn-group-vertical" id="grupoherramientas" style="position:absolute; top:0em; right: 0px; z-index: 100;" role="group" >
+    <button type="button" class="btn btn-default border menusupizq" aria-label="Left Align" title="Capas" onclick="menuLayers()" data-bs-toggle="tooltip">
+      <span class="fa fa-bars" style="color:#FFFFFF"></span>
+    </button>
+  </div>
+
+  <div id="loadingMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+    <div class="boxes">
+      <div class="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+      <div class="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+      <div class="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+      <div class="box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+    </div><br><br><br><br>
+     Por favor espera...
+  </div>
+
+  <!--<img style="position: absolute; bottom: 0.5em; right: 0.5em; width: 7em; opacity: 0.7;" src="../imagenes/logo_buenaventura.jpg"/>--> 
+
+  <div id="container3"></div>
+  <iframe id="marco5" name="marco5"></iframe>
+
+  <div class="modal" id="panel_atr" >
+    <div class="modal-dialog modal-left" role="document">
+      <div class="modal-content">
+        <div class="modal-header"><h6 class="modal-title w-100 text-center roboto-regular" id="titulotabla"></h6><button id="botonCerrarpanel_atr" type="button" class="close" onclick="cerrarPanelatr()"><span aria-hidden="true">&times;</span></button></div>
+          <div class="modal-body" style="padding:5px 10px 5px; overflow-y:auto; max-height:40em;">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item"><a class="nav-link active roboto-regular" id="home-tab" data-toggle="tab" href="#catastro" role="tab" aria-controls="home" aria-selected="true">Catastro</a></li>
+              <li class="nav-item"><a class="nav-link roboto-regular" id="profile-tab" data-toggle="tab" href="#pot" role="tab" aria-controls="profile" aria-selected="false">Planeación</a></li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="catastro" role="tabpanel" aria-labelledby="catastro-tab">
+                <table class="table table-sm table-hover" id="tblatt"></table>
+              </div>     
+              <div class="tab-pane fade" id="pot" role="tabpanel" aria-labelledby="pot-tab">
+                <table class="table table-sm table-hover" id="tblattpot"></table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="btn-group-vertical" id="grupoherramientasprincipal" role="group" >
+    <button type="button" id="buscarporAtrib" class="btn btn-default border menusupder" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="ocultarbarra()">
+      <span class="fa fa-search"></span>
+    </button>
+    <!--<button type="button" id="construcciones3d" data-toggle="modal" class="btn btn-default border menusupder" title="Construcciones 3D" data-bs-toggle="tooltip" data-bs-placement="right" role="button" aria-expanded="false" aria-controls="collapseExample">
+      <label class="ui-bookmark">
+        <input type="checkbox" id="bluetooth">
+        <div class="bookmark">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M480 48c0-26.5-21.5-48-48-48L336 0c-26.5 0-48 21.5-48 48l0 48-64 0 0-72c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 72-64 0 0-72c0-13.3-10.7-24-24-24S64 10.7 64 24l0 72L48 96C21.5 96 0 117.5 0 144l0 96L0 464c0 26.5 21.5 48 48 48l256 0 32 0 96 0 160 0c26.5 0 48-21.5 48-48l0-224c0-26.5-21.5-48-48-48l-112 0 0-144zm96 320l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16zM240 416l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16zM128 400c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32zM560 256c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0zM256 176l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16zM112 160c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0zM256 304c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32zM112 320l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16zm304-48l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16zM400 64c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0zm16 112l0 32c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16z"/></svg>
+        </div>
+      </label>
+    </button>-->
+  </div>
+
+  <!--menu inferior-->
+  <div class="button-container" id="barraInferior">
+    <!--<div class="BI-range-slider-div">
+      <input type='range' class='opacity BI-range-slider' min='0' max='1' step='0.1' value='0' onchange='ortofotobuenaventura.setVisible(true); ortofotobuenaventura.setOpacity(Number(this.value))'>
+    </div>-->
+    <button class="buttonInf" id="botonvistainicial" title="Centrar mapa" data-bs-toggle="tooltip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+        <path d="M57.7 193l9.4 16.4c8.3 14.5 21.9 25.2 38 29.8L163 255.7c17.2 4.9 29 20.6 29 38.5v39.9c0 11 6.2 21 16 25.9s16 14.9 16 25.9v39c0 15.6 14.9 26.9 29.9 22.6c16.1-4.6 28.6-17.5 32.7-33.8l2.8-11.2c4.2-16.9 15.2-31.4 30.3-40l8.1-4.6c15-8.5 24.2-24.5 24.2-41.7v-8.3c0-12.7-5.1-24.9-14.1-33.9l-3.9-3.9c-9-9-21.2-14.1-33.9-14.1H257c-11.1 0-22.1-2.9-31.8-8.4l-34.5-19.7c-4.3-2.5-7.6-6.5-9.2-11.2c-3.2-9.6 1.1-20 10.2-24.5l5.9-3c6.6-3.3 14.3-3.9 21.3-1.5l23.2 7.7c8.2 2.7 17.2-.4 21.9-7.5c4.7-7 4.2-16.3-1.2-22.8l-13.6-16.3c-10-12-9.9-29.5 .3-41.3l15.7-18.3c8.8-10.3 10.2-25 3.5-36.7l-2.4-4.2c-3.5-.2-6.9-.3-10.4-.3C163.1 48 84.4 108.9 57.7 193zM464 256c0-36.8-9.6-71.4-26.4-101.5L412 164.8c-15.7 6.3-23.8 23.8-18.5 39.8l16.9 50.7c3.5 10.4 12 18.3 22.6 20.9l29.1 7.3c1.2-9 1.8-18.2 1.8-27.5zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/></svg>
+    </button>
+    <!--<button class="buttonInf" id="botonvistacp" title="Centrar mapa" data-bs-toggle="tooltip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+        <path d="M408 120c0 54.6-73.1 151.9-105.2 192c-7.7 9.6-22 9.6-29.6 0C241.1 271.9 168 174.6 168 120C168 53.7 221.7 0 288 0s120 53.7 120 120zm8 80.4c3.5-6.9 6.7-13.8 9.6-20.6c.5-1.2 1-2.5 1.5-3.7l116-46.4C558.9 123.4 576 135 576 152V422.8c0 9.8-6 18.6-15.1 22.3L416 503V200.4zM137.6 138.3c2.4 14.1 7.2 28.3 12.8 41.5c2.9 6.8 6.1 13.7 9.6 20.6V451.8L32.9 502.7C17.1 509 0 497.4 0 480.4V209.6c0-9.8 6-18.6 15.1-22.3l122.6-49zM327.8 332c13.9-17.4 35.7-45.7 56.2-77V504.3L192 449.4V255c20.5 31.3 42.3 59.6 56.2 77c20.5 25.6 59.1 25.6 79.6 0zM288 152a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+    </button>-->
+    <!--<button class="buttonInf" onclick="menuPrintDialog()" title="Imprimir" data-bs-toggle="tooltip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+        <path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+    </button>
+    <button class="buttonInf" onclick="menuVercoordenada()" title="Ver coordenada" data-bs-toggle="tooltip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+        <path d="M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32H290.5l11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3H32c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64H64C46.3 64 32 49.7 32 32zM160 384h64v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384z"/></svg>
+    </button>
+    <button class="buttonInf" title="Buscar coordenada" data-bs-toggle="tooltip" data-toggle="modal" data-target="#buscarCoord">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM288 176c0-44.2-35.8-80-80-80s-80 35.8-80 80c0 48.8 46.5 111.6 68.6 138.6c6 7.3 16.8 7.3 22.7 0c22.1-27 68.6-89.8 68.6-138.6zm-112 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>
+    </button>-->
+    <button class="buttonInf" id="limpiarM" title="Limpiar mapa" data-bs-toggle="tooltip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" class="iconInf">
+        <path d="M566.6 54.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192-34.7-34.7c-4.2-4.2-10-6.6-16-6.6c-12.5 0-22.6 10.1-22.6 22.6v29.1L364.3 320h29.1c12.5 0 22.6-10.1 22.6-22.6c0-6-2.4-11.8-6.6-16l-34.7-34.7 192-192zM341.1 353.4L222.6 234.9c-42.7-3.7-85.2 11.7-115.8 42.3l-8 8C76.5 307.5 64 337.7 64 369.2c0 6.8 7.1 11.2 13.2 8.2l51.1-25.5c5-2.5 9.5 4.1 5.4 7.9L7.3 473.4C2.7 477.6 0 483.6 0 489.9C0 502.1 9.9 512 22.1 512l173.3 0c38.8 0 75.9-15.4 103.4-42.8c30.6-30.6 45.9-73.1 42.3-115.8z"/></svg>
+    </button>
+  </div>
+
+  <div id="barrabuscar" style="display: none;">
+    <!--<div id='barra_direccion' class="input-group mb-3">
+      <input type="search" name="direccion" id="direccion" class="form-control roboto-regular" placeholder="Buscar Dirección..."/>
+      <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+    </div> -->
+    <div id='barra_sitio' class="input-group mb-3">
+      <input type="search" name="address1" id="address1" class="form-control roboto-regular" placeholder="Buscar Sitio..."/>
+      <span style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+    </div>
+    <!--<div id='barra_manzana' style='display:none;' class="input-group mb-3">
+      <input type="search" name="manzana" id="manzana" class="form-control roboto-regular" placeholder="Buscar Manzana..."/>
+      <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+    </div>  
+    <div id='barra_codigo' style='display:none;' class="input-group mb-3">
+      <input type="search" name="codigo" id="codigo" class="form-control roboto-regular" placeholder="Buscar Codigo Catastral..."/>
+      <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+    </div>  -->
+    <!--<div id='barra_propietario' style='display:none;' class="input-group mb-3">
+      <input type="search" name="propietarios" id="propietarios" class="form-control roboto-regular" placeholder="Buscar Nombre de Propietario..."/>
+      <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+    </div>
+    <div id='barra_id_propietario' style='display:none;' class="input-group mb-3">
+      <input type="search" name="cedul" id="cedul" class="form-control roboto-regular" placeholder="Buscar Documento del Propietario..."/>
+      <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+    </div>
+    <div id='barra_matricula' style='display:none;' class="input-group mb-3">
+      <input type="search" name="matricula" id="matricula" class="form-control roboto-regular" placeholder="Buscar Matricula inmobiliaria..."/>
+      <span onclick="lista()" style="cursor: pointer;" class="input-group-text botonLista"><a class="fa-solid fa-angles-down" style="color:#FFFFFF;"></a></span>
+    </div>-->
+</div>
+
+<div id="myDropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <a href="#" id="consulta_direccion" class="dropdown-item" onclick="mostrar(id)">Consulta Dirección</a>
+  <a href="#" id="consulta_manzana" class="dropdown-item" onclick="mostrar(id)">Consulta Manzana</a>
+  <a href="#" id="consulta_sitio" class="dropdown-item" onclick="mostrar(id)">Consulta Sitio</a>
+  <a href="#" id="consulta_codigo" class="dropdown-item" onclick="mostrar(id)">Consulta Código Catastral</a> 
+  <!--<a href="#" id="consulta_matricula" class="dropdown-item" onclick="mostrar(id)">Consulta Matrícula inmobiliaria</a> 
+  <a href="#" id="consulta_propietario" class="dropdown-item" onclick="mostrar(id)">Consulta Nombre de Propietario</a>
+  <a href="#" id="consulta_id_propietario" class="dropdown-item" onclick="mostrar(id)">Consulta Documento de Propietario</a>-->
+</div>
+
+  <div class="modal" id="panel_legend" tabindex="-1" role="dialog" aria-labelledby="panel_legendLabel" aria-hidden="true">
+    <div class="modal-dialog modal-left" role="document">
+        <div class="modal-content roboto-medium">
+          <div class="modal-header">
+            <h6 class="modal-title" id="titulotablawms"></h6>
+              <button type="button" class="close" onclick='ocultarpanellegend();' data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body" style="padding:5px 10px 5px; overflow-y:auto; max-height:40em;">
+            <table class="table table-striped table-hover" id="tblattLegend"></table>
+            <div id="table-dynamic"></div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="inputIrcentrop roboto-regular" id="inputIrcentrop">
+    <button class="value" id='cabecera'>01. &nbsp;Cabecera Municipal</button>
+    <button class="value" id='aguaclara'>02. &nbsp;Agua Clara</button>
+    <button class="value" id='bajocalima'>03. &nbsp;Bajo Calima</button>
+    <button class="value" id='lacontra'>04. &nbsp;La Contra</button>
+    <button class="value" id='cisneros'>05. &nbsp;Cisneros</button>
+    <button class="value" id='cordoba'>06. &nbsp;Cordoba</button>
+    <button class="value" id='elcrucero'>07. &nbsp;El Crucero</button>
+    <button class="value" id='caminoviejo'>08. &nbsp;Camino Viejo km 40</button>
+    <button class="value" id='buenosaires'>09. &nbsp;Buenos Aires</button>
+    <button class="value" id='campohermoso'>10. &nbsp;Campo Hermoso</button>
+    <button class="value" id='guaima'>11. &nbsp;Guaima</button>
+    <button class="value" id='juanchaco'>12. &nbsp;Juanchaco</button>
+    <button class="value" id='labarra'>13. &nbsp;La Barra</button>
+    <button class="value" id='ladelfina'>14. &nbsp;La Delfina</button>
+    <button class="value" id='ellimones'>15. &nbsp;El Limones</button>
+    <button class="value" id='katanga'>16. &nbsp;Katanga</button>
+    <button class="value" id='callelarga'>17. &nbsp;Calle Larga</button>
+    <button class="value" id='ladrilleros'>18. &nbsp;Ladrilleros</button>
+    <button class="value" id='pianguita'>19. &nbsp;Pianguita</button>
+    <button class="value" id='labocana'>20. &nbsp;La Bocana</button>
+    <button class="value" id='puntasoldado'>21. &nbsp;Punta Soldado</button>
+    <button class="value" id='bendiciones'>22. &nbsp;Bendiciones</button>
+    <button class="value" id='sancipriano'>23. &nbsp;San Cipriano</button>
+    <button class="value" id='sanmarcos'>24. &nbsp;San Marcos</button>
+    <button class="value" id='labalastrera'>25. &nbsp;La Balastrera</button>
+    <button class="value" id='llanobajo'>26. &nbsp;Llano Bajo</button>
+    <button class="value" id='triana'>27. &nbsp;Triana</button>
+    <button class="value" id='umane'>28. &nbsp;Umane</button>
+    <button class="value" id='villaestela'>29. &nbsp;Villa Estela</button>
+    <button class="value" id='elsalto'>30. &nbsp;El Salto</button>
+    <button class="value" id='sabaleta'>31. &nbsp;Sabaleta</button>
+    <button class="value" id='zacarias'>32. &nbsp;Zacarias</button>
+    <button class="value" id='zaragosa'>33. &nbsp;Zaragosa</button>
+    <button class="value" id='quebradapericos'>34. &nbsp;Quebrada Pericos</button>
+    <button class="value" id='laspalmas'>35. &nbsp;Las Palmas</button>
+  </div>
+
+  <div id="leyendaPisos" style="position: absolute; bottom: 1em; right: 1em; height: 50vh; overflow: auto; display: none; z-index: 0;">
+    <!--<img src="imagenes/pisos.png">-->
+    <table class="table table-hover">
+      <thead style="position: sticky; top: 0; z-index: 1;">
+          <tr style="background-color: black; color: white">
+              <th># Pisos</th>
+              <th>Color</th>
+          </tr>
+      </thead>
+      <tbody style="background-color: white; text-align: center;" class="roboto-regular">
+          <tr><td>1</td><td style="background-color: #FFFAF0;"></td></tr>
+          <tr><td>2</td><td style="background-color: #F0F8FF;"></td></tr>
+          <tr><td>3</td><td style="background-color: #FFE4C4;"></td></tr>
+          <tr><td>4</td><td style="background-color: #FFEBCD;"></td></tr>
+          <tr><td>5</td><td style="background-color: #FAEBD7;"></td></tr>
+          <tr><td>6</td><td style="background-color: #DCDCDC;"></td></tr>
+          <tr><td>7</td><td style="background-color: #228B22;"></td></tr>
+          <tr><td>8</td><td style="background-color: #8FBC8F;"></td></tr>
+          <tr><td>9</td><td style="background-color: #FF7F50;"></td></tr>
+          <tr><td>10</td><td style="background-color: #1E90FF;"></td></tr>
+          <tr><td>11</td><td style="background-color: #BDB76B;"></td></tr>
+          <tr><td>12</td><td style="background-color: #FF00FF;"></td></tr>
+          <tr><td>13</td><td style="background-color: #DEB887;"></td></tr>
+          <tr><td>14</td><td style="background-color: #A9A9A9;"></td></tr>
+          <tr><td>15</td><td style="background-color: #00BFFF;"></td></tr>
+          <tr><td>16</td><td style="background-color: #00CED1;"></td></tr>
+          <tr><td>17</td><td style="background-color: #FF1493;"></td></tr>
+          <tr><td>18</td><td style="background-color: #B22222;"></td></tr>
+          <tr><td>19</td><td style="background-color: #483D8B;"></td></tr>
+          <tr><td>20</td><td style="background-color: #696969;"></td></tr>
+          <tr><td>21</td><td style="background-color: #D2691E;"></td></tr>
+          <tr><td>22</td><td style="background-color: #DAA520;"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQb7uqeH9Diof2c7zDfMj-lFIeVajnLUw&libraries=places"></script>
+  </body>
+</html>
+
