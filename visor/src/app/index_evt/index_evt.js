@@ -1219,7 +1219,9 @@ function datoscapas(datosc){
 
 function copiarwms(datosc){	
     actividad("copiar wms " + datosc + "");
-    /*var text = "https://www.geomonsas.xyz:8443/geoserver/buenaventura/"+datosc+"/wms?";
+    //var text = "https://www.geomonsas.xyz:8443/geoserver/buenaventura/"+datosc+"/wms?";
+    var text = "http://35.232.57.213:8080/geoserver/buenaventura/"+datosc+"/wms?";
+    console.log(text);
     document.getElementById("inputinvisible").value=text;
     var copyText = document.getElementById("inputinvisible");
     copyText.select();
@@ -1230,8 +1232,8 @@ function copiarwms(datosc){
         text: '',
         icon: 'info',
         confirmButtonText: 'Aceptar'
-      });*/
-      var text = "https://www.geomonsas.xyz:8443/geoserver/buenaventura/" + datosc + "/wms?";
+      });
+      /*var text = "https://www.geomonsas.xyz:8443/geoserver/buenaventura/" + datosc + "/wms?";
       var inputInvisible = document.getElementById("inputinvisible");
       inputInvisible.value = text;
       
@@ -1250,7 +1252,11 @@ function copiarwms(datosc){
               icon: 'error',
               confirmButtonText: 'Aceptar'
           });
-      });
+      });*/
+
+      //var idNombreLayer=datosc.split(":");
+    // console.log(datosc,idNombreLayer);
+    
 }
 
 
