@@ -344,7 +344,7 @@ try {
 
 
    
-    addAdditionalLayerOption(
+    /*addAdditionalLayerOption(
       "Recorrido 360",
       new WebMapServiceImageryProvider({
         url: 'https://www.geomonsas.xyz:8443/geoserver/buenaventura/wms',
@@ -356,7 +356,7 @@ try {
           styles: ''
         }
       }), 1.0, false, 
-    );
+    );*/
     
     //var numLayers = 3;
     viewModel.layers8.splice(0, viewModel.layers8.length);
@@ -365,7 +365,7 @@ try {
     }
   }
 
-  function setupLayersOrtofotografias() {
+  /*function setupLayersOrtofotografias() {
     capasortofoto = select_query("select * from capas where layer = 'vias' order by id DESC");
     for (i = 0; i < capasortofoto.length; i++) {
       addAdditionalLayerOption(
@@ -386,7 +386,7 @@ try {
     for (var i = numLayers; i >= 1; --i) {
       viewModel.layers6.push(imageryLayers.get(i + 4));
     }
-  }
+  }*/
 
 
   function setupLayersCatastro() {
@@ -413,7 +413,7 @@ try {
       var numLayers = capasprcatastro.length;
       viewModel.layers1.splice(0, viewModel.layers1.length);
       for (var i = numLayers; i >= 1; --i) {
-        viewModel.layers1.push(imageryLayers.get(i + 4 + capasortofoto.length));
+        viewModel.layers1.push(imageryLayers.get(i + 4));
       }
   }
 
@@ -437,7 +437,7 @@ try {
       var numLayers = capaspgirs.length;
       viewModel.layers2.splice(0, viewModel.layers2.length);
       for (var i = numLayers; i >= 1; --i) {
-        viewModel.layers2.push(imageryLayers.get(i + 4 + capasortofoto.length + capasprcatastro.length));
+        viewModel.layers2.push(imageryLayers.get(i + 4 + capasprcatastro.length));
       }
     }
 
@@ -460,7 +460,7 @@ try {
       var numLayers = capaspriesgocm.length;
       viewModel.layers3.splice(0, viewModel.layers3.length);
       for (var i = numLayers; i >= 1; --i) {
-        viewModel.layers3.push(imageryLayers.get(i + 4 + capasortofoto.length + capasprcatastro.length + capaspgirs.length));
+        viewModel.layers3.push(imageryLayers.get(i + 4 + capasprcatastro.length + capaspgirs.length));
       }
     }
 
@@ -483,7 +483,7 @@ try {
       var numLayers = capasdane.length;
       viewModel.layers4.splice(0, viewModel.layers4.length);
       for (var i = numLayers; i >= 1; --i) {
-        viewModel.layers4.push(imageryLayers.get(i + 4 + capasortofoto.length + capasprcatastro.length + capaspgirs.length + capaspriesgocm.length));
+        viewModel.layers4.push(imageryLayers.get(i + 4 + capasprcatastro.length + capaspgirs.length + capaspriesgocm.length));
       }
     }
 
@@ -506,7 +506,7 @@ try {
         var numLayers = capasrestitucion.length;
         viewModel.layers5.splice(0, viewModel.layers5.length);
         for (var i = numLayers; i >= 1; --i) {
-          viewModel.layers5.push(imageryLayers.get(i + 4 + capasortofoto.length + capasprcatastro.length + capaspgirs.length + capaspriesgocm.length + capasdane.length));
+          viewModel.layers5.push(imageryLayers.get(i + 4 + capasprcatastro.length + capaspgirs.length + capaspriesgocm.length + capasdane.length));
         }
       }
 
@@ -529,7 +529,7 @@ try {
     var numLayers = capasmdt.length;
     viewModel.layers7.splice(0, viewModel.layers7.length);
     for (var i = numLayers; i >= 1; --i) {
-      viewModel.layers7.push(imageryLayers.get(i + 4 + capasortofoto.length + capasprcatastro.length + capaspgirs.length + capaspriesgocm.length + capasdane.length + capasrestitucion.length));
+      viewModel.layers7.push(imageryLayers.get(i + 4 + capasprcatastro.length + capaspgirs.length + capaspriesgocm.length + capasdane.length + capasrestitucion.length));
     }
   }
 
@@ -699,7 +699,7 @@ viewer.imageryLayers.addImageryProvider(wmsProvider);*/
   }
 
   setupLayersBase();
-  setupLayersOrtofotografias();
+  //setupLayersOrtofotografias();
   setupLayersCatastro();
   setupLayersPgirs();
   setupLayersGestiondelriesgo();
