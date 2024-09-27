@@ -89,7 +89,7 @@ function startTour(){
 
     tour.addStep({
       id: 'step2',
-      text: '<h3 style="text-align: center; margin:0px;" class="roboto-bold">Búsqueda por atributos</h3><br><p style="text-align: justify; margin-left:2em; margin-right:2em;" class="roboto-regular"><a>A través de esta herramienta puede consultar un predio por:</a><br> •	 Dirección<br> •	 Código de la manzana catastral<br> •	 Código catastral del predio<br> •	 Nombre de propietario<br> •	 Documento de propietario<br> •	 Sitio de interés</p><br>',
+      text: '<h3 style="text-align: center; margin:0px;" class="roboto-bold">Búsqueda por atributos</h3><br><p style="text-align: justify; margin-left:2em; margin-right:2em;" class="roboto-regular"><a>A través de esta herramienta puede consultar un sitio o una dirección dentro del Departamento</a><br><br> •	 Sitio de interés</p><br>',
       attachTo: {
         element: '#center-element',
         on: 'bottom'
