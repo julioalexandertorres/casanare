@@ -57,7 +57,7 @@ function startTour(){
 
     tour.addStep({
       id: 'intro',
-      text: '<div style="text-align: center;"><img src="./imagenes/logo_pequeno.png"></div><h3 style="text-align: center; margin:0px;" class="roboto-bold"></h3><br><p style="text-align: justify; margin-left:2em; margin-right:2em;" class="roboto-regular">Al centralizar la información geográfica, esta plataforma facilita una gestión más efectiva del territorio del distrito, promueve la transparencia y participación de diferentes actores, y soportan una toma de decisiones informada y basada en datos precisos y actualizados.<p/><br>',
+      text: '<div style="text-align: center;"><img src="./imagenes/logo_pequeno.png"></div><h3 style="text-align: center; margin:0px;" class="roboto-bold"></h3><br><p style="text-align: justify; margin-left:2em; margin-right:2em;" class="roboto-regular">Al centralizar la información geográfica, esta plataforma facilita una gestión más efectiva del territorio del departamento de Casanare, promueve la transparencia y participación de diferentes actores, y soportan una toma de decisiones informada y basada en datos precisos y actualizados.<p/><br>',
       attachTo: {
         element: '#center-element',
         on: 'bottom'
